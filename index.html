@@ -7,17 +7,31 @@
 
 <style>
 
+/* RESET */
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  background:#141414;
+  color:white;
+  font-family:-apple-system,BlinkMacSystemFont,sans-serif;
+  overflow:hidden;
+}
+
+/* LOADER */
 #loader{
   position:fixed;
   inset:0;
-  background:var(--bg);
+  background:#141414;
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:center;
   z-index:99999;
 
-  /* this is what makes the fade work */
   opacity:1;
   transition:opacity 0.4s ease;
 }
@@ -27,20 +41,9 @@
   height:80px;
   object-fit:contain;
   margin-bottom:10px;
-
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
 }
 
-body{
-  background:#141414;
-  color:white;
-  font-family:-apple-system,BlinkMacSystemFont,sans-serif;
-  overflow:hidden;
-}
-
+/* APP */
 .app{
   width:100vw;
   height:100vh;
@@ -48,74 +51,11 @@ body{
   padding:12px;
 }
 
-/* NEWS (fixed first) */
-.news-panel{
-  position:absolute;
-  top:12px;
-  right:12px;
-
-  width:320px;
-  height:calc(100vh - 24px);
-
-  border-radius:20px;
-  overflow:hidden;
-}
-
-/* CHART (FULL CONTROL FIX) */
+/* STOCK PANEL */
 .stock-panel{
   position:absolute;
   top:12px;
   left:12px;
-
-  right:344px;
-  bottom:12px;
-
-  border-radius:24px;
-  overflow:hidden;
-
-  display:block;
-}
-</style>
-
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
-
-body{
-  background:#141414;
-  color:white;
-  font-family:-apple-system,BlinkMacSystemFont,sans-serif;
-  overflow:hidden;
-}
-
-.app{
-  width:100vw;
-  height:100vh;
-  position:relative;
-  padding:12px;
-}
-
-/* NEWS */
-.news-panel{
-  position:absolute;
-  top:12px;
-  right:12px;
-
-  width:320px;
-  height:calc(100vh - 24px);
-
-  border-radius:20px;
-  overflow:hidden;
-}
-
-/* CHART (FORCED FIX) */
-.stock-panel{
-  position:absolute;
-  top:12px;
-  left:12px;
-
   right:344px;
   bottom:12px;
 
@@ -123,7 +63,19 @@ body{
   overflow:hidden;
 }
 
-/* FORCE EVERYTHING TO STRETCH */
+/* NEWS PANEL */
+.news-panel{
+  position:absolute;
+  top:12px;
+  right:12px;
+  width:320px;
+  height:calc(100vh - 24px);
+
+  border-radius:20px;
+  overflow:hidden;
+}
+
+/* FORCE FULL SIZE */
 .stock-panel,
 .stock-panel > div,
 .tradingview-widget-container{
@@ -135,28 +87,59 @@ iframe{
   border:none !important;
 }
 
-</script>
+</style>
+</head>
+
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <img class="logo" src="logo.png" alt="logo">
+</div>
+
+<div class="app">
+
+  <!-- STOCK -->
+  <div class="stock-panel">
+    <div class="tradingview-widget-container">
+      <div class="tradingview-widget-container__widget"></div>
+
+      <script src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
+      {
+        "symbols":[["ASX:XJO|1D"]],
+        "chartOnly":true,
+        "colorTheme":"dark",
+        "isTransparent":true,
+        "autosize":true
+      }
+      </script>
+
+    </div>
+  </div>
+
+  <!-- NEWS -->
+  <div class="news-panel">
+    <div class="tradingview-widget-container">
+      <div class="tradingview-widget-container__widget"></div>
+
+      <script src="https://s3.tradingview.com/external-embedding/embed-widget-timeline.js" async>
+      {
+        "feedMode":"all_symbols",
+        "colorTheme":"dark",
+        "isTransparent":true,
+        "displayMode":"regular",
+        "width":"100%",
+        "height":"100%"
+      }
+      </script>
+
+    </div>
+  </div>
 
 </div>
 
-</div>
-
-<!-- NEWS -->
-<div class="news-panel">
-
-<div class="tradingview-widget-container">
-<div class="tradingview-widget-container__widget"></div>
-
-<script src="https://s3.tradingview.com/external-embedding/embed-widget-timeline.js" async>
-{
-  "feedMode":"all_symbols",
-  "colorTheme":"dark",
-  "isTransparent":true,
-  "displayMode":"regular",
-  "width":"100%",
-  "height":"100%"
-}
-
+<!-- JS (LOADER FIX) -->
+<script>
 window.addEventListener("load", () => {
   setTimeout(() => {
     const loader = document.getElementById("loader");
@@ -169,14 +152,7 @@ window.addEventListener("load", () => {
 
   }, 800);
 });
-
 </script>
-
-</div>
-
-</div>
-
-</div>
 
 </body>
 </html>
