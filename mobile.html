@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no"/>
 <title>XJO Status</title>
 
 <style>
@@ -14,75 +14,160 @@
   box-sizing:border-box;
 }
 
-html, body{
-  width:100%;
-  height:100%;
-  overflow:hidden;
+/* ROOT */
+:root{
+  --bg:#141414;
+  --glass:rgba(255,255,255,.05);
+  --text:#fff;
+  --bubble:rgba(255,255,255,.06);
+  --border:rgba(255,255,255,.14);
 }
 
-/* BODY */
+body.light{
+  --bg:#f2f2f2;
+  --glass:rgba(255,255,255,.6);
+  --text:#111;
+  --bubble:rgba(0,0,0,.06);
+  --border:rgba(0,0,0,.12);
+}
+
 body{
-  background:#141414;
-  color:#fff;
+  background:var(--bg);
+  color:var(--text);
   font-family:-apple-system,BlinkMacSystemFont,sans-serif;
+  overflow:hidden;
 }
 
 /* LOADER */
 #loader{
   position:fixed;
   inset:0;
-  background:#141414;
+  background:var(--bg);
   display:flex;
+  flex-direction:column;
   align-items:center;
   justify-content:center;
   z-index:99999;
+
   opacity:1;
-  transition:opacity 0.4s ease;
+  transition:opacity .4s ease;
 }
 
 .logo{
-  width:90px;
-  height:90px;
+  width:80px;
+  height:80px;
   object-fit:contain;
+  margin-bottom:10px;
 }
 
-/* APP */
-.app{
+/* PAGES */
+.page{
   position:absolute;
   inset:0;
-  display:flex;
-  gap:12px;
-  padding:12px;
+  opacity:0;
+  pointer-events:none;
+}
+
+.page.active{
+  opacity:1;
+  pointer-events:auto;
 }
 
 /* STOCK */
-.stock-panel{
-  flex:1;
-  position:relative;
-  border-radius:24px;
-  overflow:hidden;
-}
-
-/* NEWS */
-.news-panel{
-  width:320px;
-  position:relative;
-  border-radius:20px;
-  overflow:hidden;
-}
-
-/* FILL FIX */
-.finlogix-container,
-.tradingview-widget-container{
+#stock{
   position:absolute;
-  inset:0;
+  top:12px;
+  left:12px;
+  right:12px;
+  bottom:100px;
+}
+
+/* WIDGET */
+.widget{
   width:100%;
   height:100%;
 }
 
-/* CLEAN IFRAME */
-iframe{
-  border:none;
+/* NAV */
+.nav{
+  position:fixed;
+  bottom:14px;
+  left:50%;
+  transform:translateX(-50%);
+  width:90%;
+  height:72px;
+
+  display:flex;
+  background:var(--glass);
+  backdrop-filter:blur(16px);
+  border-radius:30px;
+  overflow:hidden;
+}
+
+/* PILL */
+.pill{
+  position:absolute;
+  width:33.3%;
+  height:100%;
+  left:0;
+  background:var(--bubble);
+  border:1px solid var(--border);
+  transition:transform .35s ease;
+}
+
+/* TAB */
+.tab{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  z-index:2;
+  cursor:pointer;
+}
+
+/* ICONS */
+.icon img{
+  width:22px;
+  height:22px;
+  object-fit:contain;
+}
+
+/* LABEL */
+.label{
+  font-size:11px;
+  margin-top:4px;
+}
+
+/* SETTINGS */
+.settings{
+  position:fixed;
+  bottom:100px;
+  left:50%;
+  transform:translateX(-50%);
+  width:90%;
+  padding:14px;
+  background:var(--glass);
+  backdrop-filter:blur(18px);
+  border-radius:24px;
+  display:none;
+}
+
+.settings.show{
+  display:block;
+}
+
+.row{
+  display:flex;
+}
+
+.btn{
+  flex:1;
+  padding:12px;
+  text-align:center;
+  background:var(--bubble);
+  border-radius:14px;
+  margin:5px;
 }
 
 </style>
@@ -93,32 +178,32 @@ iframe{
 <!-- LOADER -->
 <div id="loader">
   <img class="logo" src="icon/icon.png" alt="logo">
-</div>
 
-<!-- APP -->
-<div class="app">
-
-  <!-- STOCK (FINLOGIX) -->
-  <div class="stock-panel">
-
-    <div class="finlogix-container"></div>
-
+  <div style="font-size:20px;font-weight:600;margin-top:6px;">
+    XJO Status
   </div>
 
-  <!-- NEWS -->
-  <div class="news-panel">
+  <div style="font-size:12px;opacity:.6;margin-top:4px;">
+    Loading market data...
+  </div>
+</div>
 
-    <div class="tradingview-widget-container">
+<!-- STOCK -->
+<div class="page active" id="stock">
+
+  <div class="widget">
+
+    <div class="tradingview-widget-container" style="height:100%;width:100%;">
+
       <div class="tradingview-widget-container__widget"></div>
 
-      <script src="https://s3.tradingview.com/external-embedding/embed-widget-timeline.js" async>
+      <script src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
       {
-        "feedMode":"all_symbols",
+        "symbols":[["ASX:XJO|1D"]],
+        "chartOnly":true,
         "colorTheme":"dark",
         "isTransparent":true,
-        "displayMode":"regular",
-        "width":"100%",
-        "height":"100%"
+        "autosize":true
       }
       </script>
 
@@ -128,34 +213,127 @@ iframe{
 
 </div>
 
-<!-- FINLOGIX -->
-<script src="https://widget.finlogix.com/Widget.js"></script>
+<!-- NEWS -->
+<div class="page" id="news">
 
+  <div class="widget">
+
+    <div class="tradingview-widget-container" style="height:100%;width:100%;">
+
+      <div class="tradingview-widget-container__widget"></div>
+
+      <script src="https://s3.tradingview.com/external-embedding/embed-widget-timeline.js" async>
+      {
+        "feedMode":"all_symbols",
+        "colorTheme":"dark",
+        "isTransparent":true,
+        "height":"100%",
+        "width":"100%"
+      }
+      </script>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- SETTINGS -->
+<div class="settings" id="settingsPanel">
+
+  <div class="row">
+    <div class="btn" onclick="dark()">Dark</div>
+    <div class="btn" onclick="light()">Light</div>
+  </div>
+
+</div>
+
+<!-- NAV -->
+<div class="nav">
+
+  <div class="pill" id="pill"></div>
+
+  <div class="tab" onmouseenter="hoverTab(0)" onclick="go('stock')">
+    <div class="icon">
+      <img src="icon/stock.png">
+    </div>
+    <div class="label">Stock</div>
+  </div>
+
+  <div class="tab" onmouseenter="hoverTab(1)" onclick="toggleSettings()">
+    <div class="icon">
+      <img src="icon/settings.png">
+    </div>
+    <div class="label">Settings</div>
+  </div>
+
+  <div class="tab" onmouseenter="hoverTab(2)" onclick="go('news')">
+    <div class="icon">
+      <img src="icon/news.png">
+    </div>
+    <div class="label">News</div>
+  </div>
+
+</div>
+
+<!-- SCRIPT -->
 <script>
+
+const pill = document.getElementById("pill");
+
+/* NAV */
+function hoverTab(i){
+  pill.style.transform = `translateX(${i * 100}%)`;
+}
+
+/* PAGE SWITCH */
+function go(page){
+
+  document.getElementById("stock").classList.remove("active");
+  document.getElementById("news").classList.remove("active");
+
+  document.getElementById(page).classList.add("active");
+
+  if(page === "stock") hoverTab(0);
+  if(page === "news") hoverTab(2);
+
+  document.getElementById("settingsPanel").classList.remove("show");
+}
+
+/* SETTINGS */
+function toggleSettings(){
+  document.getElementById("settingsPanel").classList.toggle("show");
+}
+
+/* THEME */
+function dark(){
+  document.body.classList.remove("light");
+}
+
+function light(){
+  document.body.classList.add("light");
+}
+
+/* LOADER */
 window.addEventListener("load", () => {
 
   setTimeout(() => {
 
-    if (typeof Widget !== "undefined") {
-      Widget.init({
-        widgetId: "c75665fd-d8fc-4f46-a5be-6ea596ba64c7",
-        type: "SymbolChartList",
-        language: "en",
-        symbolIds: [5,19,44,547,554,129,157],
-        isAdaptive: true,
-        withBorderBox: true
-      });
-    }
+    const loader = document.getElementById("loader");
 
-  }, 300);
-
-  const loader = document.getElementById("loader");
-  setTimeout(() => {
     loader.style.opacity = "0";
-    setTimeout(() => loader.style.display = "none", 400);
+
+    setTimeout(() => {
+      loader.style.display = "none";
+    }, 400);
+
   }, 800);
 
 });
+
+/* DISABLE ZOOM (MOBILE) */
+document.addEventListener("gesturestart", e => e.preventDefault());
+
 </script>
 
 </body>
