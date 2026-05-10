@@ -6,48 +6,29 @@
 <title>AWP</title>
 
 <style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
+.news-panel{
+  position:absolute;
+  top:12px;
+  right:12px;
 
-body{
-  background:#141414;
-  color:white;
-  font-family:-apple-system,BlinkMacSystemFont,sans-serif;
+  width:320px;
+  height:calc(100vh - 24px);
+
+  border-radius:20px;
   overflow:hidden;
-}
-
-.app{
-  width:100vw;
-  height:100vh;
-  position:relative;
-  padding:12px;
 }
 
 .stock-panel{
   position:absolute;
   top:12px;
   left:12px;
-  right:180px;
+
+  right:344px; /* 320 + 24px gap */
+
   bottom:12px;
+
   border-radius:24px;
   overflow:hidden;
-}
-
-.news-panel{
-  position:absolute;
-  top:12px;
-  right:12px;
-  width:320px;
-  height:calc(100vh - 24px);
-  border-radius:20px;
-  overflow:hidden;
-}
-
-iframe{
-  border:none !important;
 }
 </style>
 
