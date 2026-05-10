@@ -8,14 +8,18 @@
 <style>
 body {
   margin: 0;
-  background: #000;
+  background: #141414;
   color: #d0d0d0;
   font-family: Arial;
 }
 
-/* =========================
-   GRID DASHBOARD
-========================= */
+/* REMOVE ALL BORDERS */
+* {
+  border: none !important;
+  outline: none !important;
+}
+
+/* GRID */
 .container {
   display: grid;
   grid-template-columns: 1.2fr 1fr;
@@ -25,20 +29,18 @@ body {
 
 /* PANELS */
 .panel {
-  background: #0a0a0a;
+  background: #141414;
   padding: 12px;
   overflow: hidden;
-  box-sizing: border-box;
 }
 
-/* RIGHT SIDE STACK */
+/* RIGHT STACK */
 .stack {
   display: grid;
   grid-template-rows: 1fr 1fr;
   height: 100%;
 }
 
-/* TITLES */
 .title {
   font-size: 13px;
   color: #9a9a9a;
@@ -52,13 +54,11 @@ body {
 
 <div class="container">
 
-  <!-- STOCK -->
   <div class="panel">
     <div class="title">ASX 200 (XJO)</div>
     <div id="stockContainer"></div>
   </div>
 
-  <!-- RIGHT SIDE -->
   <div class="panel stack">
 
     <div>
@@ -77,7 +77,6 @@ body {
 
 <script>
 
-/* STOCK */
 function loadStock() {
   const c = document.getElementById("stockContainer");
 
@@ -97,7 +96,6 @@ function loadStock() {
   c.appendChild(s);
 }
 
-/* NEWS */
 function loadNews() {
   const c = document.getElementById("newsContainer");
 
@@ -116,7 +114,6 @@ function loadNews() {
   c.appendChild(s);
 }
 
-/* EXTRA */
 function loadExtra() {
   const c = document.getElementById("extraContainer");
 
