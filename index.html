@@ -1,40 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>AWP Desktop</title>
-
-<style>
 
 /* =====================================================
-   GLOBAL
-===================================================== */
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
-
-body{
-  background:#141414;
-  font-family:-apple-system,BlinkMacSystemFont,sans-serif;
-  color:white;
-  overflow:hidden;
-}
-
-/* =====================================================
-   APP LAYOUT
+   MAIN LAYOUT
 ===================================================== */
 .app{
+
   width:100vw;
   height:100vh;
+
   position:relative;
+
   padding:12px;
+
 }
 
 /* =====================================================
-   STOCK PANEL (TALL MAIN CHART)
+   STOCK (FULL HEIGHT FOCUS)
 ===================================================== */
 .stock-panel{
 
@@ -43,19 +23,20 @@ body{
   top:12px;
   left:12px;
 
-  right:344px;   /* space for news */
-  bottom:12px;   /* makes chart tall */
+  right:344px; /* leaves space for news panel */
+
+  bottom:12px; /* THIS MAKES IT TALLER */
 
   border-radius:24px;
 
   overflow:hidden;
 
-  background:#141414;
+  z-index:1;
 
 }
 
 /* =====================================================
-   NEWS PANEL (RIGHT SIDEBAR)
+   NEWS PANEL (SIDE)
 ===================================================== */
 .news-panel{
 
@@ -65,35 +46,26 @@ body{
   right:12px;
 
   width:320px;
+
   height:calc(100vh - 24px);
 
   border-radius:20px;
 
   overflow:hidden;
 
-  background:#141414;
+  z-index:2;
 
 }
 
 /* =====================================================
-   TRADINGVIEW BASE FIX
+   CLEAN WIDGET FIX
 ===================================================== */
 iframe{
   border:none !important;
 }
 
-/* ensure widget fills container */
-.tradingview-widget-container,
-.tradingview-widget-container__widget{
-  width:100%;
-  height:100%;
-  min-height:100%;
-}
-
-/* =====================================================
-   GLASS OVERLAY (SUBTLE)
-===================================================== */
-.panel-glass::before{
+/* subtle glass overlay */
+.panel::before{
 
   content:"";
 
@@ -105,100 +77,4 @@ iframe{
 
   pointer-events:none;
 
-  z-index:2;
-
 }
-
-/* =====================================================
-   REMOVE ANY FOOTER VISUAL DISTRACTIONS
-===================================================== */
-.stock-panel .tradingview-widget-copyright{
-  opacity:.01 !important;
-  pointer-events:none;
-  user-select:none;
-}
-
-</style>
-</head>
-
-<body>
-
-<div class="app">
-
-  <!-- =====================================================
-       STOCK CHART (MAIN)
-  ====================================================== -->
-  <div class="stock-panel panel-glass">
-
-    <div class="tradingview-widget-container">
-
-      <div class="tradingview-widget-container__widget"></div>
-
-      <script type="text/javascript"
-      src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js"
-      async>
-
-      {
-        "symbols":[["ASX:XJO|1D"]],
-        "chartOnly":false,
-        "colorTheme":"dark",
-        "isTransparent":true,
-
-        "autosize":true,
-        "width":"100%",
-        "height":"100%",
-
-        "scalePosition":"right",
-        "scaleMode":"Normal",
-
-        "hideSymbolLogo":false,
-
-        "valuesTracking":"1",
-        "changeMode":"price-and-percent",
-
-        "fontFamily":
-        "-apple-system, BlinkMacSystemFont, sans-serif"
-      }
-
-      </script>
-
-    </div>
-
-  </div>
-
-  <!-- =====================================================
-       NEWS SIDEBAR (THIN)
-  ====================================================== -->
-  <div class="news-panel panel-glass">
-
-    <div class="tradingview-widget-container">
-
-      <div class="tradingview-widget-container__widget"></div>
-
-      <script type="text/javascript"
-      src="https://s3.tradingview.com/external-embedding/embed-widget-timeline.js"
-      async>
-
-      {
-        "feedMode":"all_symbols",
-        "colorTheme":"dark",
-        "isTransparent":true,
-
-        "displayMode":"regular",
-
-        "width":"100%",
-        "height":"100%",
-
-        "locale":"en"
-      }
-
-      </script>
-
-    </div>
-
-  </div>
-
-</div>
-
-</body>
-</html>
