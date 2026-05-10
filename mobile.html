@@ -7,64 +7,82 @@
 
 <style>
 /* =========================
-   UNIFIED DARK SURFACE
+   GLOBAL THEME
 ========================= */
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Arial;
-  background: #141414; /* MAIN BACKGROUND */
+  background: #141414;
   color: #d0d0d0;
   overflow: hidden;
 }
 
-/* APP WRAPPER */
+/* APP ROOT */
 .app {
   position: fixed;
   inset: 0;
   background: #141414;
 }
 
-/* MAIN AREA (NAV SAFE SPACE) */
+/* =========================
+   SAFE CONTENT AREA
+========================= */
 .main {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  bottom: 70px;
+
+  /* prevents nav overlap */
+  bottom: calc(90px + env(safe-area-inset-bottom));
+
   overflow: hidden;
   background: #141414;
 }
 
-/* PAGES */
+/* =========================
+   PAGES
+========================= */
 .page {
   position: absolute;
   inset: 0;
   transform: translateX(100%);
   transition: transform 0.35s ease;
   overflow: hidden;
-  background: #141414; /* MATCHED */
+  background: #141414;
 }
 
 .page.active {
   transform: translateX(0);
 }
 
-/* WIDGET CONTAINERS */
+/* =========================
+   WIDGET AREA
+========================= */
 #stockContainer,
 #newsContainer {
   width: 100%;
-  height: 97%;
-  background: #141414; /* MATCHED SURFACE */
+  height: 92%;
+  background: #141414;
+  overflow: hidden;
+}
+
+/* remove iframe framing look */
+iframe {
+  border: none !important;
+  outline: none !important;
+  background: #141414 !important;
 }
 
 /* =========================
-   FLOATING NAV BAR
+   NAVIGATION BAR
 ========================= */
 .nav {
   position: fixed;
   left: 50%;
   transform: translateX(-50%);
-  bottom: 18px;
+
+  bottom: calc(18px + env(safe-area-inset-bottom));
 
   width: 85%;
   height: 64px;
@@ -73,11 +91,11 @@ body {
   justify-content: space-around;
   align-items: center;
 
-  background: rgba(20,20,20,0.85);
-  backdrop-filter: blur(20px);
+  background: rgba(20,20,20,0.9);
+  backdrop-filter: blur(22px);
 
   border-radius: 30px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.7);
 }
 
 /* NAV ITEMS */
@@ -112,12 +130,12 @@ body {
 
   <div class="main">
 
-    <!-- STOCK -->
+    <!-- STOCK PAGE -->
     <div id="stockPage" class="page active">
       <div id="stockContainer"></div>
     </div>
 
-    <!-- NEWS -->
+    <!-- NEWS PAGE -->
     <div id="newsPage" class="page">
       <div id="newsContainer"></div>
     </div>
@@ -137,6 +155,9 @@ body {
 let stockLoaded = false;
 let newsLoaded = false;
 
+/* =========================
+   NAV SWITCH
+========================= */
 function go(page) {
   const stock = document.getElementById("stockPage");
   const news = document.getElementById("newsPage");
@@ -154,13 +175,16 @@ function go(page) {
   setTab(page);
 }
 
+/* TAB STATE */
 function setTab(page) {
   document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
   if (page === "stock") document.querySelectorAll(".tab")[0].classList.add("active");
   else document.querySelectorAll(".tab")[1].classList.add("active");
 }
 
-/* STOCK (DARK MATCHED) */
+/* =========================
+   STOCK (XJO)
+========================= */
 function loadStock() {
   stockLoaded = true;
 
@@ -177,13 +201,16 @@ function loadStock() {
     height: "100%",
     autosize: true,
     colorTheme: "dark",
-    backgroundColor: "#141414"
+    hideLegend: true,
+    hideSideToolbar: true
   });
 
   c.appendChild(s);
 }
 
-/* NEWS (DARK MATCHED) */
+/* =========================
+   NEWS
+========================= */
 function loadNews() {
   newsLoaded = true;
 
@@ -198,13 +225,13 @@ function loadNews() {
     width: "100%",
     height: "100%",
     autosize: true,
-    colorTheme: "dark",
-    backgroundColor: "#141414"
+    colorTheme: "dark"
   });
 
   c.appendChild(s);
 }
 
+/* INIT */
 loadStock();
 
 </script>
