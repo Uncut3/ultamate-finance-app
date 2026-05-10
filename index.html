@@ -6,6 +6,7 @@
 <title>AWP</title>
 
 <style>
+
 *{
   margin:0;
   padding:0;
@@ -26,77 +27,7 @@ body{
   padding:12px;
 }
 
-/* NEWS */
-.news-panel{
-  position:absolute;
-  top:12px;
-  right:12px;
-  width:320px;
-  height:calc(100vh - 24px);
-  border-radius:20px;
-  overflow:hidden;
-}
-
-/* CHART */
-.stock-panel{
-  position:absolute;
-  top:12px;
-  left:12px;
-  right:344px; /* correct spacing */
-  bottom:12px;
-
-  border-radius:24px;
-  overflow:hidden;
-
-  display:flex; /* IMPORTANT FIX */
-}
-
-/* FORCE WIDGET FULL SIZE */
-.stock-panel > div{
-  width:100%;
-  height:100%;
-}
-
-iframe{
-  border:none !important;
-}
-</style>
-
-</head>
-
-<body>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>AWP</title>
-
-<style>
-
-/* FIXED THIS LINE */
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
-
-body{
-  background:#141414;
-  color:white;
-  font-family:-apple-system,BlinkMacSystemFont,sans-serif;
-  overflow:hidden;
-}
-
-.app{
-  width:100vw;
-  height:100vh;
-  position:relative;
-  padding:12px;
-}
-
-/* NEWS */
+/* NEWS (fixed first) */
 .news-panel{
   position:absolute;
   top:12px;
@@ -109,7 +40,7 @@ body{
   overflow:hidden;
 }
 
-/* CHART */
+/* CHART (FULL CONTROL FIX) */
 .stock-panel{
   position:absolute;
   top:12px;
@@ -121,17 +52,22 @@ body{
   border-radius:24px;
   overflow:hidden;
 
-  display:flex;
+  display:block;
 }
 
-/* FORCE FULL SIZE */
-.stock-panel > div,
-.news-panel > div{
-  width:100%;
-  height:100%;
+/* CRITICAL FIX */
+.stock-panel > div{
+  position:absolute;
+  inset:0;
 }
 
-/* FIX IFRAME */
+/* FIX WIDGET CONTAINERS */
+.tradingview-widget-container{
+  width:100% !important;
+  height:100% !important;
+}
+
+/* IFRAME FIX */
 iframe{
   border:none !important;
 }
@@ -144,9 +80,10 @@ iframe{
 
 <div class="app">
 
+<!-- STOCK -->
 <div class="stock-panel">
 
-<div class="tradingview-widget-container" style="height:100%;width:100%;">
+<div class="tradingview-widget-container">
 <div class="tradingview-widget-container__widget"></div>
 
 <script src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
@@ -163,9 +100,10 @@ iframe{
 
 </div>
 
+<!-- NEWS -->
 <div class="news-panel">
 
-<div class="tradingview-widget-container" style="height:100%;width:100%;">
+<div class="tradingview-widget-container">
 <div class="tradingview-widget-container__widget"></div>
 
 <script src="https://s3.tradingview.com/external-embedding/embed-widget-timeline.js" async>
@@ -184,9 +122,6 @@ iframe{
 </div>
 
 </div>
-
-</body>
-</html>
 
 </body>
 </html>
