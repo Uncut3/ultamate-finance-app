@@ -7,9 +7,6 @@
 
 <style>
 
-/* =====================================================
-   BASE
-===================================================== */
 *{
   margin:0;
   padding:0;
@@ -18,14 +15,12 @@
 
 body{
   background:#141414;
-  color:#fff;
+  color:white;
   font-family:-apple-system,BlinkMacSystemFont,sans-serif;
   overflow:hidden;
 }
 
-/* =====================================================
-   LAYOUT
-===================================================== */
+/* LAYOUT */
 .app{
   width:100vw;
   height:100vh;
@@ -33,9 +28,7 @@ body{
   padding:12px;
 }
 
-/* =====================================================
-   STOCK (MAIN CHART)
-===================================================== */
+/* STOCK (BIG) */
 .stock-panel{
   position:absolute;
   top:12px;
@@ -47,9 +40,7 @@ body{
   background:#141414;
 }
 
-/* =====================================================
-   NEWS (SIDE)
-===================================================== */
+/* NEWS (SIDE) */
 .news-panel{
   position:absolute;
   top:12px;
@@ -58,11 +49,13 @@ body{
   height:calc(100vh - 24px);
   border-radius:20px;
   overflow:hidden;
-  background:#141414;
 }
 
+/* CHART */
+iframe{border:none !important}
+
 /* =====================================================
-   SETTINGS BUTTON (TOP RIGHT)
+   ⚙️ SETTINGS BUTTON (ADDED ONLY)
 ===================================================== */
 .settings-btn{
   position:absolute;
@@ -85,18 +78,11 @@ body{
 
   cursor:pointer;
 
-  z-index:20;
-
-  transition:.2s;
-}
-
-.settings-btn:hover{
-  transform:scale(1.05);
-  background:rgba(255,255,255,.1);
+  z-index:9999;
 }
 
 /* =====================================================
-   SETTINGS PANEL
+   SETTINGS PANEL (ADDED ONLY)
 ===================================================== */
 .settings-panel{
   position:absolute;
@@ -114,32 +100,11 @@ body{
 
   display:none;
 
-  z-index:20;
+  z-index:9999;
 }
 
 .settings-panel.show{
   display:block;
-}
-
-/* buttons */
-.btn{
-  flex:1;
-  padding:10px;
-  margin:4px;
-
-  text-align:center;
-
-  border-radius:10px;
-
-  background:rgba(255,255,255,.08);
-
-  cursor:pointer;
-
-  user-select:none;
-}
-
-.btn:hover{
-  background:rgba(255,255,255,.14);
 }
 
 .row{
@@ -147,17 +112,26 @@ body{
   gap:6px;
 }
 
-/* =====================================================
-   LIGHT MODE
-===================================================== */
+.btn{
+  flex:1;
+  padding:10px;
+  margin:4px;
+
+  background:rgba(255,255,255,.08);
+
+  border-radius:10px;
+
+  text-align:center;
+
+  cursor:pointer;
+
+  user-select:none;
+}
+
+/* LIGHT MODE */
 body.light{
   background:#f2f2f2;
   color:#111;
-}
-
-body.light .stock-panel,
-body.light .news-panel{
-  background:#f2f2f2;
 }
 
 body.light .settings-btn,
@@ -170,15 +144,6 @@ body.light .btn{
   color:#111;
 }
 
-body.light .btn:hover{
-  background:rgba(0,0,0,.14);
-}
-
-/* charts */
-iframe{
-  border:none !important;
-}
-
 </style>
 </head>
 
@@ -186,10 +151,14 @@ iframe{
 
 <div class="app">
 
-<!-- SETTINGS BUTTON -->
+<!-- =========================
+     ⚙️ SETTINGS BUTTON
+========================= -->
 <div class="settings-btn" onclick="toggleSettings()">⚙️</div>
 
-<!-- SETTINGS PANEL -->
+<!-- =========================
+     SETTINGS PANEL
+========================= -->
 <div class="settings-panel" id="settingsPanel">
 
   <div class="row">
@@ -207,11 +176,11 @@ iframe{
 
 <script src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
 {
-  "symbols":[["ASX:XJO|1D"]],
-  "chartOnly":false,
-  "colorTheme":"dark",
-  "isTransparent":true,
-  "autosize":true
+"symbols":[["ASX:XJO|1D"]],
+"chartOnly":false,
+"colorTheme":"dark",
+"isTransparent":true,
+"autosize":true
 }
 </script>
 
@@ -227,12 +196,12 @@ iframe{
 
 <script src="https://s3.tradingview.com/external-embedding/embed-widget-timeline.js" async>
 {
-  "feedMode":"all_symbols",
-  "colorTheme":"dark",
-  "isTransparent":true,
-  "displayMode":"regular",
-  "width":"100%",
-  "height":"100%"
+"feedMode":"all_symbols",
+"colorTheme":"dark",
+"isTransparent":true,
+"displayMode":"regular",
+"width":"100%",
+"height":"100%"
 }
 </script>
 
@@ -242,11 +211,10 @@ iframe{
 
 </div>
 
+<!-- =========================
+     SETTINGS SCRIPT
+========================= -->
 <script>
-
-/* =========================
-   SETTINGS LOGIC (FIXED)
-========================= */
 
 function toggleSettings(){
   document.getElementById("settingsPanel")
