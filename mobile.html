@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+
 <title>AWP Mobile</title>
 
 <style>
@@ -18,11 +20,42 @@
   outline:none;
 }
 
+:root{
+
+  /* DARK */
+  --bg:#141414;
+  --glass:rgba(255,255,255,.05);
+  --text:white;
+  --bubble:rgba(255,255,255,.06);
+  --bubbleBorder:rgba(255,255,255,.14);
+
+}
+
+body.light{
+
+  /* LIGHT */
+  --bg:#f1f1f1;
+  --glass:rgba(255,255,255,.55);
+  --text:#111;
+  --bubble:rgba(255,255,255,.65);
+  --bubbleBorder:rgba(255,255,255,.4);
+
+}
+
 body{
-  background:#141414;
-  color:white;
-  font-family:-apple-system,BlinkMacSystemFont,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+
   overflow:hidden;
+
+  transition:
+    background .25s ease,
+    color .25s ease;
 }
 
 /* =========================================================
@@ -31,11 +64,14 @@ body{
 .app{
   position:fixed;
   inset:0;
-  background:#141414;
+
+  background:var(--bg);
+
+  transition:background .25s ease;
 }
 
 /* =========================================================
-   MAIN
+   MAIN CONTENT
 ========================================================= */
 .main{
   position:fixed;
@@ -65,14 +101,15 @@ body{
 }
 
 /* =========================================================
-   WIDGET AREA
+   WIDGET
 ========================================================= */
 .widget{
   width:100%;
   height:100%;
-  overflow:hidden;
 
-  background:#141414;
+  background:var(--bg);
+
+  overflow:hidden;
 
   opacity:.55;
 }
@@ -82,7 +119,7 @@ iframe{
 }
 
 /* =========================================================
-   🍏 NAVIGATION BAR
+   🍏 MAIN NAV
 ========================================================= */
 .nav{
   position:fixed;
@@ -104,14 +141,14 @@ iframe{
 
   border-radius:30px;
 
-  background:rgba(255,255,255,.05);
+  background:var(--glass);
 
   backdrop-filter:blur(16px);
   -webkit-backdrop-filter:blur(16px);
 
   box-shadow:
     inset 0 0 8px rgba(255,255,255,.03),
-    0 10px 30px rgba(0,0,0,.55);
+    0 10px 30px rgba(0,0,0,.35);
 
   overflow:hidden;
 
@@ -126,30 +163,35 @@ iframe{
 
   left:8px;
 
-  width:calc(50% - 8px);
+  width:calc(33.333% - 10px);
   height:56px;
 
   border-radius:22px;
 
-  /* soft white */
-  background:rgba(255,255,255,.06);
+  background:var(--bubble);
 
-  /* faded white outline */
-  border:1px solid rgba(255,255,255,.14);
+  border:1px solid var(--bubbleBorder);
 
-  /* soft glow */
   box-shadow:
     inset 0 0 8px rgba(255,255,255,.04);
 
   transition:
-    transform .35s cubic-bezier(.22,1,.36,1);
+    transform .35s cubic-bezier(.22,1,.36,1),
+    background .25s ease;
 
   z-index:0;
 }
 
-/* animation */
-.active-pill.news{
+.active-pill.stock{
+  transform:translateX(0%);
+}
+
+.active-pill.settings{
   transform:translateX(100%);
+}
+
+.active-pill.news{
+  transform:translateX(200%);
 }
 
 /* =========================================================
@@ -170,7 +212,7 @@ iframe{
 
   border-radius:22px;
 
-  color:rgba(255,255,255,.6);
+  color:rgba(255,255,255,.65);
 
   transition:
     transform .22s ease,
@@ -179,8 +221,12 @@ iframe{
   user-select:none;
 }
 
+body.light .tab{
+  color:rgba(0,0,0,.55);
+}
+
 .tab.active{
-  color:white;
+  color:var(--text);
 }
 
 .tab:active{
@@ -188,7 +234,7 @@ iframe{
 }
 
 /* =========================================================
-   ICON
+   ICONS
 ========================================================= */
 .icon{
   font-size:22px;
@@ -203,12 +249,99 @@ iframe{
     scale(1.08);
 }
 
-/* =========================================================
-   LABEL
-========================================================= */
 .label{
   margin-top:4px;
   font-size:11px;
+}
+
+/* =========================================================
+   SETTINGS PANEL
+========================================================= */
+.settings-panel{
+  position:fixed;
+
+  left:50%;
+  transform:translateX(-50%);
+
+  bottom:calc(100px + env(safe-area-inset-bottom));
+
+  width:88%;
+
+  padding:14px;
+
+  border-radius:28px;
+
+  background:var(--glass);
+
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+
+  box-shadow:
+    inset 0 0 8px rgba(255,255,255,.03),
+    0 10px 30px rgba(0,0,0,.35);
+
+  opacity:0;
+  pointer-events:none;
+
+  transition:
+    opacity .25s ease,
+    transform .25s ease;
+
+  z-index:9998;
+}
+
+.settings-panel.show{
+
+  opacity:1;
+  pointer-events:auto;
+
+  transform:
+    translateX(-50%)
+    translateY(-8px);
+
+}
+
+/* =========================================================
+   SETTINGS NAV
+========================================================= */
+.settings-nav{
+  width:100%;
+
+  display:flex;
+
+  gap:10px;
+}
+
+/* =========================================================
+   SETTINGS BUTTON
+========================================================= */
+.setting-btn{
+  flex:1;
+
+  height:54px;
+
+  border-radius:18px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  background:var(--bubble);
+
+  border:1px solid var(--bubbleBorder);
+
+  color:var(--text);
+
+  font-size:15px;
+  font-weight:500;
+
+  transition:
+    transform .2s ease,
+    background .25s ease;
+}
+
+.setting-btn:active{
+  transform:scale(.96);
 }
 
 </style>
@@ -228,40 +361,29 @@ iframe{
       <div class="widget">
 
         <!-- TradingView Widget BEGIN -->
-        <div class="tradingview-widget-container" style="height:100%;width:100%;">
-          <div class="tradingview-widget-container__widget" style="height:100%;width:100%;"></div>
+        <div class="tradingview-widget-container"
+        style="height:100%;width:100%;">
+
+          <div
+          class="tradingview-widget-container__widget"
+          style="height:100%;width:100%;"></div>
 
           <script type="text/javascript"
           src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js"
           async>
           {
-            "symbols": [
-              [
-                "ASX:XJO|1D"
-              ]
-            ],
+            "symbols": [["ASX:XJO|1D"]],
             "chartOnly": true,
             "width": "100%",
             "height": "100%",
             "locale": "en",
             "colorTheme": "dark",
             "autosize": true,
-            "showVolume": false,
-            "showMA": false,
-            "hideDateRanges": false,
-            "hideMarketStatus": false,
             "hideSymbolLogo": true,
-            "scalePosition": "right",
-            "scaleMode": "Normal",
-            "fontFamily": "-apple-system, BlinkMacSystemFont, sans-serif",
-            "fontSize": "10",
-            "noTimeScale": false,
-            "valuesTracking": "1",
-            "changeMode": "price-and-percent",
-            "chartType": "area",
-            "lineWidth": 2
+            "chartType": "area"
           }
           </script>
+
         </div>
         <!-- TradingView Widget END -->
 
@@ -277,8 +399,12 @@ iframe{
       <div class="widget">
 
         <!-- TradingView Widget BEGIN -->
-        <div class="tradingview-widget-container" style="height:100%;width:100%;">
-          <div class="tradingview-widget-container__widget" style="height:100%;width:100%;"></div>
+        <div class="tradingview-widget-container"
+        style="height:100%;width:100%;">
+
+          <div
+          class="tradingview-widget-container__widget"
+          style="height:100%;width:100%;"></div>
 
           <script type="text/javascript"
           src="https://s3.tradingview.com/external-embedding/embed-widget-timeline.js"
@@ -293,6 +419,7 @@ iframe{
             "locale": "en"
           }
           </script>
+
         </div>
         <!-- TradingView Widget END -->
 
@@ -303,31 +430,72 @@ iframe{
   </div>
 
   <!-- =========================================================
-       🍏 NAVIGATION BAR
+       SETTINGS MENU
+  ========================================================== -->
+  <div class="settings-panel" id="settingsPanel">
+
+    <!-- SETTINGS NAV -->
+    <div class="settings-nav">
+
+      <!-- DARK -->
+      <button
+      class="setting-btn"
+      onclick="setDarkMode()">
+
+        🌑 Dark
+
+      </button>
+
+      <!-- LIGHT -->
+      <button
+      class="setting-btn"
+      onclick="setLightMode()">
+
+        ☀️ Light
+
+      </button>
+
+    </div>
+
+  </div>
+
+  <!-- =========================================================
+       🍏 NAV BAR
   ========================================================== -->
   <div class="nav">
 
     <!-- active bubble -->
-    <div class="active-pill" id="pill"></div>
+    <div
+    class="active-pill stock"
+    id="pill"></div>
 
     <!-- STOCK -->
     <div
-      class="tab active"
-      id="stockTab"
-      onclick="switchPage('stock')"
-    >
+    class="tab active"
+    id="stockTab"
+    onclick="switchPage('stock')">
 
       <div class="icon">📈</div>
       <div class="label">Stock</div>
 
     </div>
 
+    <!-- SETTINGS -->
+    <div
+    class="tab"
+    id="settingsTab"
+    onclick="toggleSettings()">
+
+      <div class="icon">⚙️</div>
+      <div class="label">Settings</div>
+
+    </div>
+
     <!-- NEWS -->
     <div
-      class="tab"
-      id="newsTab"
-      onclick="switchPage('news')"
-    >
+    class="tab"
+    id="newsTab"
+    onclick="switchPage('news')">
 
       <div class="icon">📰</div>
       <div class="label">News</div>
@@ -341,21 +509,47 @@ iframe{
 <script>
 
 /* =========================================================
+   ELEMENTS
+========================================================= */
+const stockPage=
+document.getElementById("stockPage");
+
+const newsPage=
+document.getElementById("newsPage");
+
+const stockTab=
+document.getElementById("stockTab");
+
+const settingsTab=
+document.getElementById("settingsTab");
+
+const newsTab=
+document.getElementById("newsTab");
+
+const settingsPanel=
+document.getElementById("settingsPanel");
+
+const pill=
+document.getElementById("pill");
+
+/* =========================================================
    PAGE SWITCHING
 ========================================================= */
 function switchPage(page){
 
-  const stockPage=document.getElementById("stockPage");
-  const newsPage=document.getElementById("newsPage");
-
-  const stockTab=document.getElementById("stockTab");
-  const newsTab=document.getElementById("newsTab");
-
-  const pill=document.getElementById("pill");
+  settingsPanel.classList.remove("show");
 
   stockTab.classList.remove("active");
+  settingsTab.classList.remove("active");
   newsTab.classList.remove("active");
 
+  pill.classList.remove(
+    "stock",
+    "settings",
+    "news"
+  );
+
+  /* STOCK */
   if(page==="stock"){
 
     stockPage.classList.add("active");
@@ -363,10 +557,11 @@ function switchPage(page){
 
     stockTab.classList.add("active");
 
-    pill.classList.remove("news");
+    pill.classList.add("stock");
 
   }
 
+  /* NEWS */
   else{
 
     newsPage.classList.add("active");
@@ -377,6 +572,45 @@ function switchPage(page){
     pill.classList.add("news");
 
   }
+
+}
+
+/* =========================================================
+   SETTINGS
+========================================================= */
+function toggleSettings(){
+
+  stockTab.classList.remove("active");
+  newsTab.classList.remove("active");
+
+  settingsTab.classList.add("active");
+
+  pill.classList.remove(
+    "stock",
+    "news"
+  );
+
+  pill.classList.add("settings");
+
+  settingsPanel.classList.toggle("show");
+
+}
+
+/* =========================================================
+   DARK MODE
+========================================================= */
+function setDarkMode(){
+
+  document.body.classList.remove("light");
+
+}
+
+/* =========================================================
+   LIGHT MODE
+========================================================= */
+function setLightMode(){
+
+  document.body.classList.add("light");
 
 }
 
