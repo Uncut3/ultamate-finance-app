@@ -36,6 +36,7 @@ body{
   color:var(--text);
   font-family:-apple-system,BlinkMacSystemFont,sans-serif;
   overflow:hidden;
+  height:100vh;
 }
 
 /* LOADER */
@@ -66,6 +67,7 @@ body{
   inset:0;
   opacity:0;
   pointer-events:none;
+  display:flex;
 }
 
 .page.active{
@@ -80,12 +82,19 @@ body{
   left:12px;
   right:12px;
   bottom:100px;
+  display:flex;
 }
 
 /* WIDGET */
 .widget{
-  width:100%;
-  height:100%;
+  flex:1;
+  display:flex;
+}
+
+/* TRADINGVIEW FIX (IMPORTANT CHANGE) */
+.tradingview-widget-container{
+  flex:1;
+  display:flex;
 }
 
 /* NAV */
@@ -193,17 +202,29 @@ body{
 
   <div class="widget">
 
-    <div class="tradingview-widget-container" style="height:100%;width:100%;">
+    <!-- ✅ FIXED WIDGET -->
+    <div class="tradingview-widget-container">
 
       <div class="tradingview-widget-container__widget"></div>
 
-      <script src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
+      <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
       {
-        "symbols":[["ASX:XJO|1D"]],
-        "chartOnly":true,
-        "colorTheme":"dark",
-        "isTransparent":true,
-        "autosize":true
+        "symbols": [
+          ["ASX:XJO|1D|AUD"]
+        ],
+        "chartOnly": false,
+        "colorTheme": "dark",
+        "isTransparent": true,
+        "locale": "en",
+        "autosize": true,
+        "dateRanges": [
+          "1d|1",
+          "1m|30",
+          "3m|60",
+          "12m|1D",
+          "60m|1W",
+          "all|1M"
+        ]
       }
       </script>
 
@@ -218,7 +239,7 @@ body{
 
   <div class="widget">
 
-    <div class="tradingview-widget-container" style="height:100%;width:100%;">
+    <div class="tradingview-widget-container">
 
       <div class="tradingview-widget-container__widget"></div>
 
@@ -240,12 +261,10 @@ body{
 
 <!-- SETTINGS -->
 <div class="settings" id="settingsPanel">
-
   <div class="row">
     <div class="btn" onclick="dark()">Dark</div>
     <div class="btn" onclick="light()">Light</div>
   </div>
-
 </div>
 
 <!-- NAV -->
@@ -254,41 +273,31 @@ body{
   <div class="pill" id="pill"></div>
 
   <div class="tab" onmouseenter="hoverTab(0)" onclick="go('stock')">
-    <div class="icon">
-      <img src="icon/stock.png">
-    </div>
+    <div class="icon"><img src="icon/stock.png"></div>
     <div class="label">Stock</div>
   </div>
 
   <div class="tab" onmouseenter="hoverTab(1)" onclick="toggleSettings()">
-    <div class="icon">
-      <img src="icon/settings.png">
-    </div>
+    <div class="icon"><img src="icon/settings.png"></div>
     <div class="label">Settings</div>
   </div>
 
   <div class="tab" onmouseenter="hoverTab(2)" onclick="go('news')">
-    <div class="icon">
-      <img src="icon/news.png">
-    </div>
+    <div class="icon"><img src="icon/news.png"></div>
     <div class="label">News</div>
   </div>
 
 </div>
 
-<!-- SCRIPT -->
 <script>
 
 const pill = document.getElementById("pill");
 
-/* NAV */
 function hoverTab(i){
   pill.style.transform = `translateX(${i * 100}%)`;
 }
 
-/* PAGE SWITCH */
 function go(page){
-
   document.getElementById("stock").classList.remove("active");
   document.getElementById("news").classList.remove("active");
 
@@ -300,38 +309,22 @@ function go(page){
   document.getElementById("settingsPanel").classList.remove("show");
 }
 
-/* SETTINGS */
 function toggleSettings(){
   document.getElementById("settingsPanel").classList.toggle("show");
 }
 
-/* THEME */
-function dark(){
-  document.body.classList.remove("light");
-}
+function dark(){ document.body.classList.remove("light"); }
+function light(){ document.body.classList.add("light"); }
 
-function light(){
-  document.body.classList.add("light");
-}
-
-/* LOADER */
 window.addEventListener("load", () => {
-
   setTimeout(() => {
-
     const loader = document.getElementById("loader");
-
     loader.style.opacity = "0";
-
-    setTimeout(() => {
-      loader.style.display = "none";
-    }, 400);
-
+    setTimeout(() => loader.style.display = "none", 400);
   }, 800);
-
 });
 
-/* DISABLE ZOOM (MOBILE) */
+/* DISABLE ZOOM */
 document.addEventListener("gesturestart", e => e.preventDefault());
 
 </script>
