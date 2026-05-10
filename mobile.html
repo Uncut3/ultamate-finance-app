@@ -7,7 +7,7 @@
 
 <style>
 /* =========================
-   GLOBAL THEME
+   GLOBAL
 ========================= */
 body {
   margin: 0;
@@ -17,32 +17,31 @@ body {
   overflow: hidden;
 }
 
-/* APP ROOT */
+/* REMOVE ALL DEFAULT BORDERS GLOBALLY */
+* {
+  border: none !important;
+  outline: none !important;
+}
+
+/* APP */
 .app {
   position: fixed;
   inset: 0;
   background: #141414;
 }
 
-/* =========================
-   SAFE CONTENT AREA
-========================= */
+/* SAFE AREA */
 .main {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-
-  /* prevents nav overlap */
   bottom: calc(90px + env(safe-area-inset-bottom));
-
   overflow: hidden;
   background: #141414;
 }
 
-/* =========================
-   PAGES
-========================= */
+/* PAGES */
 .page {
   position: absolute;
   inset: 0;
@@ -56,32 +55,19 @@ body {
   transform: translateX(0);
 }
 
-/* =========================
-   WIDGET AREA
-========================= */
-#stockContainer,
-#newsContainer {
+/* WIDGET AREA */
+.widget {
   width: 100%;
   height: 92%;
   background: #141414;
-  overflow: hidden;
+  opacity: 0.5;
 }
 
-/* remove iframe framing look */
-iframe {
-  border: none !important;
-  outline: none !important;
-  background: #141414 !important;
-}
-
-/* =========================
-   NAVIGATION BAR
-========================= */
+/* NAV */
 .nav {
   position: fixed;
   left: 50%;
   transform: translateX(-50%);
-
   bottom: calc(18px + env(safe-area-inset-bottom));
 
   width: 85%;
@@ -98,7 +84,6 @@ iframe {
   box-shadow: 0 10px 30px rgba(0,0,0,0.7);
 }
 
-/* NAV ITEMS */
 .tab {
   display: flex;
   flex-direction: column;
@@ -130,19 +115,16 @@ iframe {
 
   <div class="main">
 
-    <!-- STOCK PAGE -->
     <div id="stockPage" class="page active">
-      <div id="stockContainer"></div>
+      <div id="stockContainer" class="widget"></div>
     </div>
 
-    <!-- NEWS PAGE -->
     <div id="newsPage" class="page">
-      <div id="newsContainer"></div>
+      <div id="newsContainer" class="widget"></div>
     </div>
 
   </div>
 
-  <!-- NAV -->
   <div class="nav">
     <div class="tab active" onclick="go('stock')">📈<div class="label">Stock</div></div>
     <div class="tab" onclick="go('news')">📰<div class="label">News</div></div>
@@ -155,9 +137,6 @@ iframe {
 let stockLoaded = false;
 let newsLoaded = false;
 
-/* =========================
-   NAV SWITCH
-========================= */
 function go(page) {
   const stock = document.getElementById("stockPage");
   const news = document.getElementById("newsPage");
@@ -175,16 +154,12 @@ function go(page) {
   setTab(page);
 }
 
-/* TAB STATE */
 function setTab(page) {
   document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
   if (page === "stock") document.querySelectorAll(".tab")[0].classList.add("active");
   else document.querySelectorAll(".tab")[1].classList.add("active");
 }
 
-/* =========================
-   STOCK (XJO)
-========================= */
 function loadStock() {
   stockLoaded = true;
 
@@ -200,17 +175,12 @@ function loadStock() {
     width: "100%",
     height: "100%",
     autosize: true,
-    colorTheme: "dark",
-    hideLegend: true,
-    hideSideToolbar: true
+    colorTheme: "dark"
   });
 
   c.appendChild(s);
 }
 
-/* =========================
-   NEWS
-========================= */
 function loadNews() {
   newsLoaded = true;
 
@@ -231,7 +201,6 @@ function loadNews() {
   c.appendChild(s);
 }
 
-/* INIT */
 loadStock();
 
 </script>
