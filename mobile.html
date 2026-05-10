@@ -20,7 +20,7 @@ html, body{
   overflow:hidden;
 }
 
-/* BODY */
+/* DARK BASE */
 body{
   background:#141414;
   color:#fff;
@@ -46,7 +46,7 @@ body{
   object-fit:contain;
 }
 
-/* APP */
+/* APP LAYOUT */
 .app{
   position:absolute;
   inset:0;
@@ -55,24 +55,30 @@ body{
   padding:12px;
 }
 
-/* STOCK PANEL */
-.stock-panel{
-  flex:1;
+/* 🔥 GLASS PANELS RESTORED */
+.stock-panel,
+.news-panel{
   position:relative;
   border-radius:24px;
   overflow:hidden;
-  background:transparent;
+
+  background:rgba(255,255,255,0.04);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+
+  border:1px solid rgba(255,255,255,0.08);
 }
 
-/* NEWS PANEL */
+/* SIZE */
+.stock-panel{
+  flex:1;
+}
+
 .news-panel{
   width:320px;
-  position:relative;
-  border-radius:20px;
-  overflow:hidden;
 }
 
-/* FULL FILL FIX */
+/* 🔥 FINLOGIX FULL FILL */
 .finlogix-container,
 .tradingview-widget-container{
   position:absolute;
@@ -81,12 +87,12 @@ body{
   height:100%;
 }
 
-/* REMOVE ANY BACKGROUND BLOCKING */
+/* REMOVE BLOCKING BACKGROUND ONLY FOR WIDGET */
 .finlogix-container{
   background:transparent !important;
 }
 
-/* IFRAME SAFETY */
+/* SAFETY */
 iframe{
   border:none;
 }
@@ -104,7 +110,7 @@ iframe{
 <!-- APP -->
 <div class="app">
 
-  <!-- STOCK (FINLOGIX) -->
+  <!-- STOCK -->
   <div class="stock-panel">
 
     <div class="finlogix-container"></div>
@@ -134,7 +140,7 @@ iframe{
 
 </div>
 
-<!-- FINLOGIX SCRIPT -->
+<!-- FINLOGIX -->
 <script src="https://widget.finlogix.com/Widget.js"></script>
 
 <script>
@@ -151,7 +157,7 @@ window.addEventListener("load", () => {
 
         isAdaptive: true,
 
-        // 🔥 IMPORTANT FIXES
+        // keep clean glass look
         withBorderBox: false,
         isTransparent: true
       });
