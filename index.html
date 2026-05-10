@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+]<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
@@ -14,7 +14,6 @@
   box-sizing:border-box;
 }
 
-/* BODY */
 body{
   background:#141414;
   color:white;
@@ -27,61 +26,60 @@ body{
   position:fixed;
   inset:0;
   background:#141414;
-
   display:flex;
-  flex-direction:column;
   align-items:center;
   justify-content:center;
-
   z-index:99999;
+  opacity:1;
+  transition:opacity 0.4s ease;
 }
 
-/* LOGO */
 .logo{
   width:90px;
   height:90px;
   object-fit:contain;
 }
 
-/* APP LAYOUT */
+/* APP */
 .app{
   width:100vw;
   height:100vh;
-
   position:relative;
   padding:12px;
-
   display:flex;
   gap:12px;
 }
 
-/* STOCK PANEL */
+/* STOCK */
 .stock-panel{
   flex:1;
   border-radius:24px;
   overflow:hidden;
-  min-width:0;
 }
 
-/* NEWS PANEL */
+/* NEWS */
 .news-panel{
   width:320px;
   border-radius:20px;
   overflow:hidden;
 }
 
-/* FORCE FULL SIZE */
+/* SAFE SIZE */
 .stock-panel,
-.news-panel,
+.news-panel{
+  min-width:0;
+}
+
+/* TRADINGVIEW FIX */
 .stock-panel > div,
 .news-panel > div,
 .tradingview-widget-container{
-  width:100% !important;
-  height:100% !important;
+  width:100%;
+  height:100%;
 }
 
 iframe{
-  border:none !important;
+  border:none;
 }
 
 </style>
@@ -91,10 +89,9 @@ iframe{
 
 <!-- LOADER -->
 <div id="loader">
-  <img class="logo" src="icon/icon.png" alt="Logo">
+  <img class="logo" src="icon/icon.png" alt="logo">
 </div>
 
-<!-- APP -->
 <div class="app">
 
   <!-- STOCK -->
@@ -142,8 +139,24 @@ iframe{
 
 </div>
 
-<!-- CONFIG (GLOBAL RULES) -->
-<script src="config.js"></script>
+<!-- LOADER SCRIPT -->
+<script>
+window.addEventListener("load", () => {
+
+  setTimeout(() => {
+
+    const loader = document.getElementById("loader");
+
+    loader.style.opacity = "0";
+
+    setTimeout(() => {
+      loader.style.display = "none";
+    }, 400);
+
+  }, 800);
+
+});
+</script>
 
 </body>
 </html>
