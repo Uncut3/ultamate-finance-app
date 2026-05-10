@@ -46,7 +46,7 @@ body{
   object-fit:contain;
 }
 
-/* APP LAYOUT */
+/* APP */
 .app{
   position:absolute;
   inset:0;
@@ -55,7 +55,7 @@ body{
   padding:12px;
 }
 
-/* STOCK PANEL (IMPORTANT FIX) */
+/* STOCK PANEL */
 .stock-panel{
   flex:1;
   position:relative;
@@ -71,17 +71,14 @@ body{
   overflow:hidden;
 }
 
-/* 🔥 IMPORTANT: FORCE ABSOLUTE FILL FOR TRADINGVIEW */
-.tradingview-widget-container{
+/* IMPORTANT: FULL FILL CONTAINERS */
+.finlogix-container,
+.news-panel .tradingview-widget-container{
   position:absolute;
   inset:0;
 }
 
-.tradingview-widget-container__widget{
-  position:absolute;
-  inset:0;
-}
-
+/* IF ANY IFRAME INSIDE */
 iframe{
   border:none;
 }
@@ -99,35 +96,10 @@ iframe{
 <!-- APP -->
 <div class="app">
 
-  <!-- STOCK (FIXED) -->
+  <!-- STOCK (FINLOGIX REPLACED) -->
   <div class="stock-panel">
 
-    <div class="tradingview-widget-container">
-
-      <div class="tradingview-widget-container__widget"></div>
-
-      <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
-      {
-        "symbols": [
-          ["ASX:XJO|1D|AUD"]
-        ],
-        "chartOnly": false,
-        "colorTheme": "dark",
-        "isTransparent": true,
-        "locale": "en",
-        "autosize": true,
-        "dateRanges": [
-          "1d|1",
-          "1m|30",
-          "3m|60",
-          "12m|1D",
-          "60m|1W",
-          "all|1M"
-        ]
-      }
-      </script>
-
-    </div>
+    <div class="finlogix-container"></div>
 
   </div>
 
@@ -135,7 +107,6 @@ iframe{
   <div class="news-panel">
 
     <div class="tradingview-widget-container">
-
       <div class="tradingview-widget-container__widget"></div>
 
       <script src="https://s3.tradingview.com/external-embedding/embed-widget-timeline.js" async>
@@ -154,6 +125,28 @@ iframe{
   </div>
 
 </div>
+
+<!-- FINLOGIX SCRIPT -->
+<script type="text/javascript" src="https://widget.finlogix.com/Widget.js"></script>
+
+<script type="text/javascript">
+Widget.init({
+    widgetId: "c75665fd-d8fc-4f46-a5be-6ea596ba64c7",
+    type: "SymbolChartList",
+    language: "en",
+    symbolIds: [
+        5,
+        19,
+        44,
+        547,
+        554,
+        129,
+        157
+    ],
+    isAdaptive: true,
+    withBorderBox: true
+});
+</script>
 
 <!-- LOADER SCRIPT -->
 <script>
