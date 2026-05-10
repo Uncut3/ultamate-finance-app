@@ -94,48 +94,25 @@ body{
 
   border-radius:30px;
 
-  border:1px solid rgba(255,255,255,.14);
+  /* 🍏 SOFT WHITE OUTLINE */
+  border:1px solid rgba(255,255,255,.5);
 
+  /* GLASS */
   background:rgba(255,255,255,.06);
 
   backdrop-filter:blur(14px);
   -webkit-backdrop-filter:blur(14px);
 
+  /* SOFT GLOW */
   box-shadow:
-    inset 0 0 8px 1px rgba(255,255,255,.08),
+    inset 0 0 10px rgba(255,255,255,.08),
+    0 0 0 1px rgba(255,255,255,.04),
     0 10px 30px rgba(0,0,0,.55);
 
   overflow:hidden;
 
   z-index:9999;
 }
-
-/* ACTIVE PILL */
-.active-pill{
-  position:absolute;
-
-  left:8px;
-
-  width:calc(50% - 8px);
-  height:56px;
-
-  border-radius:22px;
-
-  background:rgba(255,255,255,.08);
-
-  box-shadow:
-    inset 0 0 6px rgba(255,255,255,.08);
-
-  transition:
-    transform .35s cubic-bezier(.22,1,.36,1);
-
-  z-index:0;
-}
-
-.active-pill.news{
-  transform:translateX(100%);
-}
-
 /* =========================================================
    TABS
 ========================================================= */
