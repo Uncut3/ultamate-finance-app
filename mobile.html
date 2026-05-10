@@ -7,27 +7,21 @@
 
 <style>
 /* =========================
-   GLOBAL
+   GLOBAL DARK THEME
 ========================= */
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Arial, sans-serif;
-  background: #0b0f1a;
-  color: white;
+  font-family: -apple-system, BlinkMacSystemFont, Arial;
+  background: #05070d;
+  color: #ffffff;
   overflow: hidden;
 }
 
 /* =========================
-   APP LAYOUT
+   MAIN LAYOUT
 ========================= */
-.app {
-  height: 100vh;
-  width: 100vw;
-}
-
-/* MAIN CONTENT AREA */
 .main {
-  height: calc(100vh - 70px); /* space for bottom nav */
+  height: calc(100vh - 90px);
   position: relative;
   overflow: hidden;
 }
@@ -37,15 +31,13 @@ body {
 ========================= */
 .page {
   position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 100%;
   padding: 10px;
-
   transform: translateX(100%);
-  transition: transform 0.35s ease;
+  transition: 0.35s ease;
   overflow-y: auto;
+  background: #05070d;
 }
 
 .page.active {
@@ -57,44 +49,41 @@ body {
 }
 
 /* =========================
-   STOCK PAGE
+   STOCK / NEWS CONTAINERS
 ========================= */
-#stockContainer {
+#stockContainer,
+#newsContainer {
   width: 100%;
   height: 100%;
 }
 
 /* =========================
-   NEWS PAGE
-========================= */
-#newsContainer {
-  width: 100%;
-}
-
-/* =========================
-   BOTTOM NAV (iOS STYLE)
+   FLOATING DARK NAV BAR
 ========================= */
 .bottom-nav {
   position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
 
-  height: 70px;
+  height: 64px;
+  width: 85%;
 
   display: flex;
   justify-content: space-around;
   align-items: center;
 
-  background: rgba(20, 20, 20, 0.6);
-  backdrop-filter: blur(20px);
+  background: rgba(10, 12, 18, 0.75);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
 
-  border-top: 1px solid rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 30px;
 
-  padding-bottom: env(safe-area-inset-bottom);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.7);
 }
 
-/* NAV ITEM */
+/* NAV ITEMS */
 .nav-item {
   display: flex;
   flex-direction: column;
@@ -102,22 +91,21 @@ body {
 
   font-size: 20px;
   opacity: 0.5;
-  transition: 0.25s;
+  transition: 0.2s ease;
   cursor: pointer;
+
+  color: #ffffff;
 }
 
-/* ACTIVE TAB */
 .nav-item.active {
   opacity: 1;
   transform: translateY(-2px);
 }
 
-/* LABEL */
 .label {
   font-size: 10px;
   margin-top: 2px;
-  color: white;
-  opacity: 0.8;
+  color: #cfcfcf;
 }
 
 </style>
@@ -125,40 +113,31 @@ body {
 
 <body>
 
-<div class="app">
+<div class="main">
 
-  <!-- =========================
-       MAIN CONTENT
-  ========================= -->
-  <div class="main">
-
-    <!-- STOCK PAGE -->
-    <div id="stockPage" class="page active">
-      <div id="stockContainer"></div>
-    </div>
-
-    <!-- NEWS PAGE -->
-    <div id="newsPage" class="page">
-      <div id="newsContainer"></div>
-    </div>
-
+  <!-- STOCK PAGE -->
+  <div id="stockPage" class="page active">
+    <div id="stockContainer"></div>
   </div>
 
-  <!-- =========================
-       BOTTOM NAVIGATION
-  ========================= -->
-  <div class="bottom-nav">
-    <div class="nav-item active" onclick="showPage('stock')">
-      📈
-      <div class="label">Stock</div>
-    </div>
-
-    <div class="nav-item" onclick="showPage('news')">
-      📰
-      <div class="label">News</div>
-    </div>
+  <!-- NEWS PAGE -->
+  <div id="newsPage" class="page">
+    <div id="newsContainer"></div>
   </div>
 
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <div class="nav-item active" onclick="showPage('stock')">
+    📈
+    <div class="label">Stock</div>
+  </div>
+
+  <div class="nav-item" onclick="showPage('news')">
+    📰
+    <div class="label">News</div>
+  </div>
 </div>
 
 <script>
@@ -166,9 +145,7 @@ body {
 let stockLoaded = false;
 let newsLoaded = false;
 
-/* =========================
-   PAGE SWITCHING
-========================= */
+/* PAGE SWITCH */
 function showPage(page) {
   const stock = document.getElementById("stockPage");
   const news = document.getElementById("newsPage");
@@ -176,41 +153,30 @@ function showPage(page) {
   if (page === "stock") {
     stock.classList.add("active");
     news.classList.remove("active");
-    news.classList.add("left");
-    stock.classList.remove("left");
 
-    if (!stockLoaded) loadStockWidget();
+    if (!stockLoaded) loadStock();
 
   } else {
     news.classList.add("active");
     stock.classList.remove("active");
-    stock.classList.add("left");
-    news.classList.remove("left");
 
-    if (!newsLoaded) loadNewsWidget();
+    if (!newsLoaded) loadNews();
   }
 
-  setActiveTab(page);
+  setTab(page);
 }
 
-/* =========================
-   ACTIVE TAB UI
-========================= */
-function setActiveTab(page) {
+/* TAB STATE */
+function setTab(page) {
   const tabs = document.querySelectorAll(".nav-item");
   tabs.forEach(t => t.classList.remove("active"));
 
-  if (page === "stock") {
-    tabs[0].classList.add("active");
-  } else {
-    tabs[1].classList.add("active");
-  }
+  if (page === "stock") tabs[0].classList.add("active");
+  else tabs[1].classList.add("active");
 }
 
-/* =========================
-   STOCK WIDGET (XJO)
-========================= */
-function loadStockWidget() {
+/* STOCK (XJO) */
+function loadStock() {
   stockLoaded = true;
 
   const container = document.getElementById("stockContainer");
@@ -220,13 +186,10 @@ function loadStockWidget() {
   script.async = true;
 
   script.innerHTML = JSON.stringify({
-    symbols: [
-      ["ASX:XJO|1D"]
-    ],
+    symbols: [["ASX:XJO|1D"]],
     chartOnly: true,
     width: "100%",
     height: "100%",
-    locale: "en",
     colorTheme: "dark",
     autosize: true
   });
@@ -234,10 +197,8 @@ function loadStockWidget() {
   container.appendChild(script);
 }
 
-/* =========================
-   NEWS WIDGET (AU MARKET)
-========================= */
-function loadNewsWidget() {
+/* NEWS */
+function loadNews() {
   newsLoaded = true;
 
   const container = document.getElementById("newsContainer");
@@ -247,21 +208,17 @@ function loadNewsWidget() {
   script.async = true;
 
   script.innerHTML = JSON.stringify({
-    feedMode: "all_symbols",
     displayMode: "regular",
     width: "100%",
     height: "100%",
-    colorTheme: "dark",
-    locale: "en"
+    colorTheme: "dark"
   });
 
   container.appendChild(script);
 }
 
-/* =========================
-   INIT
-========================= */
-loadStockWidget();
+/* INIT */
+loadStock();
 
 </script>
 
