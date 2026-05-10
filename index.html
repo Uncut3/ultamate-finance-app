@@ -1,36 +1,73 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>AWP Desktop</title>
 
 <style>
+/* =========================
+   GLOBAL DARK THEME
+========================= */
 body {
   margin: 0;
-  background: #000000;
+  font-family: -apple-system, BlinkMacSystemFont, Arial;
+  background: #000;
   color: #d0d0d0;
-  font-family: Arial;
 }
 
-/* CLEAN GRID (NO BORDERS) */
+/* =========================
+   MAIN GRID LAYOUT
+========================= */
 .container {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1.2fr 1fr;
   height: 100vh;
   gap: 0;
-  padding: 10px;
-  box-sizing: border-box;
 }
 
+/* =========================
+   PANELS (NO BORDERS)
+========================= */
 .panel {
   background: #0a0a0a;
-  padding: 10px;
+  padding: 12px;
+  overflow: hidden;
 }
 
-h2 {
-  margin: 0 0 10px 0;
-  color: #cfcfcf;
-  font-weight: 400;
+/* REMOVE ALL VISUAL BORDERS */
+* {
+  border: none !important;
+  outline: none !important;
 }
+
+/* =========================
+   TITLES
+========================= */
+.title {
+  font-size: 14px;
+  color: #9a9a9a;
+  margin-bottom: 10px;
+  letter-spacing: 0.5px;
+}
+
+/* =========================
+   RIGHT COLUMN STACK
+========================= */
+.stack {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  height: 100%;
+}
+
+/* =========================
+   FULL WIDGET CONTAINERS
+========================= */
+.widget {
+  width: 100%;
+  height: 100%;
+}
+
 </style>
 </head>
 
@@ -38,19 +75,105 @@ h2 {
 
 <div class="container">
 
+  <!-- =========================
+       LEFT: STOCK CHART
+  ========================= -->
   <div class="panel">
-    <h2>ASX 200 (XJO)</h2>
+    <div class="title">ASX 200 (XJO)</div>
 
-    <script src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js"></script>
+    <div class="widget" id="stockContainer"></div>
   </div>
 
-  <div class="panel">
-    <h2>Australia Market News</h2>
+  <!-- =========================
+       RIGHT: NEWS STACK
+  ========================= -->
+  <div class="panel stack">
 
-    <script src="https://s3.tradingview.com/external-embedding/embed-widget-timeline.js"></script>
+    <div>
+      <div class="title">Australia Market News</div>
+      <div class="widget" id="newsContainer"></div>
+    </div>
+
+    <div>
+      <div class="title">Market Overview</div>
+      <div class="widget" id="extraContainer"></div>
+    </div>
+
   </div>
 
 </div>
+
+<script>
+
+/* =========================
+   STOCK WIDGET (XJO)
+========================= */
+function loadStock() {
+  const container = document.getElementById("stockContainer");
+
+  const script = document.createElement("script");
+  script.src = "https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js";
+  script.async = true;
+
+  script.innerHTML = JSON.stringify({
+    symbols: [["ASX:XJO|1D"]],
+    chartOnly: true,
+    width: "100%",
+    height: "100%",
+    autosize: true,
+    colorTheme: "dark"
+  });
+
+  container.appendChild(script);
+}
+
+/* =========================
+   NEWS WIDGET
+========================= */
+function loadNews() {
+  const container = document.getElementById("newsContainer");
+
+  const script = document.createElement("script");
+  script.src = "https://s3.tradingview.com/external-embedding/embed-widget-timeline.js";
+  script.async = true;
+
+  script.innerHTML = JSON.stringify({
+    displayMode: "regular",
+    width: "100%",
+    height: "100%",
+    autosize: true,
+    colorTheme: "dark"
+  });
+
+  container.appendChild(script);
+}
+
+/* =========================
+   OPTIONAL EXTRA PANEL
+========================= */
+function loadExtra() {
+  const container = document.getElementById("extraContainer");
+
+  const script = document.createElement("script");
+  script.src = "https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js";
+  script.async = true;
+
+  script.innerHTML = JSON.stringify({
+    colorTheme: "dark",
+    width: "100%",
+    height: "100%",
+    showChart: true
+  });
+
+  container.appendChild(script);
+}
+
+/* INIT */
+loadStock();
+loadNews();
+loadExtra();
+
+</script>
 
 </body>
 </html>
