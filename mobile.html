@@ -20,9 +20,9 @@
 
 body{
   background:#141414;
+  color:white;
   font-family:-apple-system,BlinkMacSystemFont,sans-serif;
   overflow:hidden;
-  color:white;
 }
 
 /* =========================================================
@@ -35,13 +35,13 @@ body{
 }
 
 /* =========================================================
-   MAIN CONTENT
+   MAIN
 ========================================================= */
 .main{
   position:fixed;
   inset:0;
 
-  bottom:calc(78px + env(safe-area-inset-bottom));
+  bottom:calc(82px + env(safe-area-inset-bottom));
 
   overflow:hidden;
 }
@@ -56,7 +56,7 @@ body{
   opacity:0;
   pointer-events:none;
 
-  transition:opacity .28s ease;
+  transition:opacity .25s ease;
 }
 
 .page.active{
@@ -65,16 +65,24 @@ body{
 }
 
 /* =========================================================
-   WIDGETS
+   WIDGET AREA
 ========================================================= */
 .widget{
   width:100%;
-  height:94%;
+  height:100%;
+  overflow:hidden;
+
+  background:#141414;
+
   opacity:.55;
 }
 
+iframe{
+  border:none !important;
+}
+
 /* =========================================================
-   🍏 NAV
+   🍏 NAVIGATION BAR
 ========================================================= */
 .nav{
   position:fixed;
@@ -96,24 +104,52 @@ body{
 
   border-radius:30px;
 
-  /* 🍏 SOFT WHITE OUTLINE */
-  border:1px solid rgba(255,255,255,.5);
+  background:rgba(255,255,255,.05);
 
-  /* GLASS */
-  background:rgba(255,255,255,.06);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
 
-  backdrop-filter:blur(14px);
-  -webkit-backdrop-filter:blur(14px);
-
-  /* SOFT GLOW */
   box-shadow:
-    inset 0 0 10px rgba(255,255,255,.08),
-    0 0 0 1px rgba(255,255,255,.04),
+    inset 0 0 8px rgba(255,255,255,.03),
     0 10px 30px rgba(0,0,0,.55);
 
   overflow:hidden;
 
   z-index:9999;
+}
+
+/* =========================================================
+   ACTIVE BUBBLE
+========================================================= */
+.active-pill{
+  position:absolute;
+
+  left:8px;
+
+  width:calc(50% - 8px);
+  height:56px;
+
+  border-radius:22px;
+
+  /* soft white */
+  background:rgba(255,255,255,.06);
+
+  /* faded white outline */
+  border:1px solid rgba(255,255,255,.14);
+
+  /* soft glow */
+  box-shadow:
+    inset 0 0 8px rgba(255,255,255,.04);
+
+  transition:
+    transform .35s cubic-bezier(.22,1,.36,1);
+
+  z-index:0;
+}
+
+/* animation */
+.active-pill.news{
+  transform:translateX(100%);
 }
 
 /* =========================================================
@@ -151,10 +187,14 @@ body{
   transform:scale(.96);
 }
 
+/* =========================================================
+   ICON
+========================================================= */
 .icon{
   font-size:22px;
 
-  transition:transform .25s ease;
+  transition:
+    transform .25s ease;
 }
 
 .tab.active .icon{
@@ -163,6 +203,9 @@ body{
     scale(1.08);
 }
 
+/* =========================================================
+   LABEL
+========================================================= */
 .label{
   margin-top:4px;
   font-size:11px;
@@ -177,31 +220,118 @@ body{
 
   <div class="main">
 
-    <!-- STOCK -->
+    <!-- =========================================================
+         STOCK PAGE
+    ========================================================== -->
     <div class="page active" id="stockPage">
-      <div class="widget"></div>
+
+      <div class="widget">
+
+        <!-- TradingView Widget BEGIN -->
+        <div class="tradingview-widget-container" style="height:100%;width:100%;">
+          <div class="tradingview-widget-container__widget" style="height:100%;width:100%;"></div>
+
+          <script type="text/javascript"
+          src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js"
+          async>
+          {
+            "symbols": [
+              [
+                "ASX:XJO|1D"
+              ]
+            ],
+            "chartOnly": true,
+            "width": "100%",
+            "height": "100%",
+            "locale": "en",
+            "colorTheme": "dark",
+            "autosize": true,
+            "showVolume": false,
+            "showMA": false,
+            "hideDateRanges": false,
+            "hideMarketStatus": false,
+            "hideSymbolLogo": true,
+            "scalePosition": "right",
+            "scaleMode": "Normal",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, sans-serif",
+            "fontSize": "10",
+            "noTimeScale": false,
+            "valuesTracking": "1",
+            "changeMode": "price-and-percent",
+            "chartType": "area",
+            "lineWidth": 2
+          }
+          </script>
+        </div>
+        <!-- TradingView Widget END -->
+
+      </div>
+
     </div>
 
-    <!-- NEWS -->
+    <!-- =========================================================
+         NEWS PAGE
+    ========================================================== -->
     <div class="page" id="newsPage">
-      <div class="widget"></div>
+
+      <div class="widget">
+
+        <!-- TradingView Widget BEGIN -->
+        <div class="tradingview-widget-container" style="height:100%;width:100%;">
+          <div class="tradingview-widget-container__widget" style="height:100%;width:100%;"></div>
+
+          <script type="text/javascript"
+          src="https://s3.tradingview.com/external-embedding/embed-widget-timeline.js"
+          async>
+          {
+            "feedMode": "all_symbols",
+            "isTransparent": true,
+            "displayMode": "regular",
+            "width": "100%",
+            "height": "100%",
+            "colorTheme": "dark",
+            "locale": "en"
+          }
+          </script>
+        </div>
+        <!-- TradingView Widget END -->
+
+      </div>
+
     </div>
 
   </div>
 
-  <!-- 🍏 NAV -->
+  <!-- =========================================================
+       🍏 NAVIGATION BAR
+  ========================================================== -->
   <div class="nav">
 
+    <!-- active bubble -->
     <div class="active-pill" id="pill"></div>
 
-    <div class="tab active" id="stockTab" onclick="switchPage('stock')">
+    <!-- STOCK -->
+    <div
+      class="tab active"
+      id="stockTab"
+      onclick="switchPage('stock')"
+    >
+
       <div class="icon">📈</div>
       <div class="label">Stock</div>
+
     </div>
 
-    <div class="tab" id="newsTab" onclick="switchPage('news')">
+    <!-- NEWS -->
+    <div
+      class="tab"
+      id="newsTab"
+      onclick="switchPage('news')"
+    >
+
       <div class="icon">📰</div>
       <div class="label">News</div>
+
     </div>
 
   </div>
@@ -210,6 +340,9 @@ body{
 
 <script>
 
+/* =========================================================
+   PAGE SWITCHING
+========================================================= */
 function switchPage(page){
 
   const stockPage=document.getElementById("stockPage");
@@ -232,7 +365,9 @@ function switchPage(page){
 
     pill.classList.remove("news");
 
-  }else{
+  }
+
+  else{
 
     newsPage.classList.add("active");
     stockPage.classList.remove("active");
