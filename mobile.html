@@ -6,43 +6,32 @@
 <title>AWP Mobile</title>
 
 <style>
-/* =========================
-   GLOBAL
-========================= */
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Arial;
   background: #000;
   color: #d0d0d0;
+  overflow: hidden;
 }
 
-/* =========================
-   APP WRAPPER
-========================= */
+/* APP */
 .app {
   position: fixed;
   inset: 0;
   background: #000;
 }
 
-/* =========================
-   SAFE LAYOUT FIX (IMPORTANT)
-========================= */
+/* MAIN AREA */
 .main {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-
-  /* THIS IS THE REAL FIX */
-  bottom: calc(80px + env(safe-area-inset-bottom));
-
+  bottom: 90px; /* keeps space for nav */
   overflow: hidden;
 }
 
-/* =========================
-   PAGES
-========================= */
+/* PAGES */
 .page {
   position: absolute;
   inset: 0;
@@ -56,24 +45,19 @@ body {
   transform: translateX(0);
 }
 
-/* =========================
-   FULL WIDGET AREA
-========================= */
+/* 🔥 FIX: REDUCED WIDGET HEIGHT AREA */
 #stockContainer,
 #newsContainer {
   width: 100%;
-  height: 100%;
+  height: 92%; /* reduced so it never touches nav zone */
 }
 
-/* =========================
-   NAVIGATION (FLOATING)
-========================= */
+/* NAV */
 .nav {
   position: fixed;
   left: 50%;
   transform: translateX(-50%);
-
-  bottom: calc(18px + env(safe-area-inset-bottom));
+  bottom: 18px;
 
   width: 85%;
   height: 64px;
@@ -84,21 +68,18 @@ body {
 
   background: rgba(15,15,15,0.78);
   backdrop-filter: blur(25px);
-
   border-radius: 30px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.85);
 }
 
-/* NAV ITEMS */
 .tab {
   display: flex;
   flex-direction: column;
   align-items: center;
-
   font-size: 20px;
   opacity: 0.5;
-  transition: 0.2s;
   cursor: pointer;
+  transition: 0.2s;
   color: #d0d0d0;
 }
 
@@ -147,7 +128,6 @@ body {
 let stockLoaded = false;
 let newsLoaded = false;
 
-/* PAGE SWITCH */
 function go(page) {
   const stock = document.getElementById("stockPage");
   const news = document.getElementById("newsPage");
@@ -165,7 +145,6 @@ function go(page) {
   setTab(page);
 }
 
-/* TAB UI */
 function setTab(page) {
   document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
   if (page === "stock") document.querySelectorAll(".tab")[0].classList.add("active");
