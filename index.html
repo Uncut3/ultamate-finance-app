@@ -51,114 +51,59 @@ body{
   overflow:hidden;
 }
 
-/* CHART */
-iframe{border:none !important}
-
-/* =====================================================
-   ⚙️ SETTINGS BUTTON (ADDED ONLY)
-===================================================== */
+/* SETTINGS BUTTON */
 .settings-btn{
   position:absolute;
   top:16px;
   right:16px;
-
   width:42px;
   height:42px;
-
   display:flex;
   align-items:center;
   justify-content:center;
-
-  font-size:18px;
-
-  background:rgba(255,255,255,.06);
-  backdrop-filter:blur(14px);
-
+  background:rgba(255,255,255,.05);
+  backdrop-filter:blur(16px);
   border-radius:14px;
-
   cursor:pointer;
-
-  z-index:9999;
+  z-index:10;
 }
 
-/* =====================================================
-   SETTINGS PANEL (ADDED ONLY)
-===================================================== */
+/* SETTINGS PANEL */
 .settings-panel{
   position:absolute;
   top:70px;
   right:16px;
-
   width:200px;
-
   padding:12px;
-
   border-radius:18px;
-
-  background:rgba(255,255,255,.06);
+  background:rgba(255,255,255,.05);
   backdrop-filter:blur(18px);
-
   display:none;
-
-  z-index:9999;
 }
 
-.settings-panel.show{
-  display:block;
-}
-
-.row{
-  display:flex;
-  gap:6px;
-}
+.settings-panel.show{display:block}
 
 .btn{
   flex:1;
   padding:10px;
   margin:4px;
-
   background:rgba(255,255,255,.08);
-
   border-radius:10px;
-
   text-align:center;
-
   cursor:pointer;
-
-  user-select:none;
 }
 
-/* LIGHT MODE */
-body.light{
-  background:#f2f2f2;
-  color:#111;
-}
+.row{display:flex;gap:6px}
 
-body.light .settings-btn,
-body.light .settings-panel{
-  background:rgba(0,0,0,.06);
-}
-
-body.light .btn{
-  background:rgba(0,0,0,.08);
-  color:#111;
-}
+/* CHART */
+iframe{border:none !important}
 
 </style>
 </head>
 
 <body>
-
-<div class="app">
-
-<!-- =========================
-     ⚙️ SETTINGS BUTTON
-========================= -->
 <div class="settings-btn" onclick="toggleSettings()">⚙️</div>
 
-<!-- =========================
-     SETTINGS PANEL
-========================= -->
 <div class="settings-panel" id="settingsPanel">
 
   <div class="row">
@@ -166,6 +111,17 @@ body.light .btn{
     <div class="btn" onclick="setLight()">Light</div>
   </div>
 
+</div>
+
+<!-- SETTINGS BUTTON -->
+<div class="settings-btn" onclick="toggleSettings()">⚙️</div>
+
+<!-- SETTINGS PANEL -->
+<div class="settings-panel" id="settingsPanel">
+<div class="row">
+<div class="btn" onclick="dark()">Dark</div>
+<div class="btn" onclick="light()">Light</div>
+</div>
 </div>
 
 <!-- STOCK -->
@@ -209,24 +165,18 @@ body.light .btn{
 
 </div>
 
-</div>
-
-<!-- =========================
-     SETTINGS SCRIPT
-========================= -->
 <script>
 
 function toggleSettings(){
-  document.getElementById("settingsPanel")
-    .classList.toggle("show");
+document.getElementById("settingsPanel").classList.toggle("show");
 }
 
-function setDark(){
-  document.body.classList.remove("light");
+function dark(){
+document.body.classList.remove("light");
 }
 
-function setLight(){
-  document.body.classList.add("light");
+function light(){
+document.body.classList.add("light");
 }
 
 </script>
