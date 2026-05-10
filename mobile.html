@@ -1,56 +1,103 @@
-<!-- =====================================================
-     STOCK CHART (ASX:XJO)
-===================================================== -->
-<div class="widget stock-widget">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mobile Bottom Nav</title>
 
-  <div class="tradingview-widget-container stock-chart">
+<style>
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial;
+    background: linear-gradient(135deg, #dbeafe, #fce7f3);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
 
-    <div class="tradingview-widget-container__widget"></div>
+  .content {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
 
-    <!-- small emblem -->
-    <div class="tv-emblem">
-      <a href="https://www.tradingview.com/symbols/ASX-XJO/"
-         target="_blank"
-         rel="noopener nofollow">
-        TradingView
-      </a>
-    </div>
+  /* Bottom nav */
+  .nav-wrapper {
+    position: fixed;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+  }
 
-    <script type="text/javascript"
-      src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js"
-      async>
+  .nav {
+    display: flex;
+    gap: 28px;
+    padding: 12px 18px;
+    background: rgba(255,255,255,0.35);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.4);
+    border-radius: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  }
 
-    {
-      "symbols": [
-        ["ASX:XJO|1D|AUD"]
-      ],
+  .item {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    cursor: pointer;
+    position: relative;
+    color: #666;
+    transition: 0.2s;
+  }
 
-      "chartOnly": true,
-      "lineWidth": 2,
-      "lineType": 0,
-      "chartType": "area",
+  .item.active {
+    color: #000;
+    transform: scale(1.1);
+  }
 
-      "backgroundColor": "#141414",
-      "isTransparent": true,
-      "colorTheme": "dark",
+  .item.active::after {
+    content: "";
+    position: absolute;
+    bottom: -4px;
+    width: 6px;
+    height: 6px;
+    background: #000;
+    border-radius: 50%;
+  }
+</style>
+</head>
 
-      "autosize": true,
-      "width": "100%",
-      "height": "100%",
+<body>
 
-      "hideSymbolLogo": true,
-      "hideDateRanges": false,
-      "hideMarketStatus": false,
-
-      "valuesTracking": "1",
-      "changeMode": "price-and-percent",
-
-      "fontFamily":
-      "-apple-system, BlinkMacSystemFont, sans-serif"
-    }
-
-    </script>
-
+<div class="content">
+  <div>
+    <h1>Mobile Version</h1>
+    <p>iOS-style bottom navigation</p>
   </div>
-
 </div>
+
+<div class="nav-wrapper">
+  <div class="nav">
+    <div class="item active" onclick="setActive(this)">🏠</div>
+    <div class="item" onclick="setActive(this)">🔍</div>
+    <div class="item" onclick="setActive(this)">👤</div>
+    <div class="item" onclick="setActive(this)">⚙️</div>
+  </div>
+</div>
+
+<script>
+function setActive(el) {
+  document.querySelectorAll(".item").forEach(i => i.classList.remove("active"));
+  el.classList.add("active");
+}
+</script>
+
+</body>
+</html>
