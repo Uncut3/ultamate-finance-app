@@ -6,31 +6,30 @@
 <style>
 body {
   margin: 0;
-  background: #05070d;
-  color: white;
+  background: #000000;
+  color: #d0d0d0;
   font-family: Arial;
 }
 
-/* DARK GRID LAYOUT */
+/* CLEAN GRID (NO BORDERS) */
 .container {
   display: grid;
   grid-template-columns: 1fr 1fr;
   height: 100vh;
-  gap: 10px;
+  gap: 0;
   padding: 10px;
   box-sizing: border-box;
 }
 
 .panel {
-  background: #0b0f1a;
-  border-radius: 12px;
+  background: #0a0a0a;
   padding: 10px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 
 h2 {
-  margin-top: 0;
-  color: #ffffff;
+  margin: 0 0 10px 0;
+  color: #cfcfcf;
+  font-weight: 400;
 }
 </style>
 </head>
@@ -39,14 +38,12 @@ h2 {
 
 <div class="container">
 
-  <!-- STOCK -->
   <div class="panel">
     <h2>ASX 200 (XJO)</h2>
 
     <script src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js"></script>
   </div>
 
-  <!-- NEWS -->
   <div class="panel">
     <h2>Australia Market News</h2>
 
