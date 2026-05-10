@@ -14,7 +14,7 @@
   box-sizing:border-box;
 }
 
-/* IMPORTANT: FIX HEIGHT CHAIN */
+/* HEIGHT FIX */
 html, body{
   height:100%;
 }
@@ -48,7 +48,7 @@ body{
   object-fit:contain;
 }
 
-/* APP */
+/* APP LAYOUT */
 .app{
   width:100vw;
   height:100vh;
@@ -60,7 +60,7 @@ body{
   align-items:stretch;
 }
 
-/* STOCK PANEL */
+/* STOCK */
 .stock-panel{
   flex:1;
   height:100%;
@@ -68,10 +68,11 @@ body{
   border-radius:24px;
   overflow:hidden;
 
+  min-width:0;
   min-height:0;
 }
 
-/* NEWS PANEL */
+/* NEWS */
 .news-panel{
   width:320px;
   height:100%;
@@ -79,16 +80,18 @@ body{
   border-radius:20px;
   overflow:hidden;
 
+  min-width:0;
   min-height:0;
 }
 
-/* TRADINGVIEW SAFE CONTAINER */
+/* TRADINGVIEW */
 .tradingview-widget-container{
   width:100%;
   height:100%;
+  min-height:100%;
 }
 
-/* IFRAME SAFETY */
+/* SAFETY */
 iframe{
   border:none;
 }
