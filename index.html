@@ -6,7 +6,7 @@
 <title>AWP</title>
 
 <style>
-.*{
+*{
   margin:0;
   padding:0;
   box-sizing:border-box;
@@ -66,6 +66,82 @@ iframe{
 
 <body>
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AWP</title>
+
+<style>
+
+/* FIXED THIS LINE */
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  background:#141414;
+  color:white;
+  font-family:-apple-system,BlinkMacSystemFont,sans-serif;
+  overflow:hidden;
+}
+
+.app{
+  width:100vw;
+  height:100vh;
+  position:relative;
+  padding:12px;
+}
+
+/* NEWS */
+.news-panel{
+  position:absolute;
+  top:12px;
+  right:12px;
+
+  width:320px;
+  height:calc(100vh - 24px);
+
+  border-radius:20px;
+  overflow:hidden;
+}
+
+/* CHART */
+.stock-panel{
+  position:absolute;
+  top:12px;
+  left:12px;
+
+  right:344px;
+  bottom:12px;
+
+  border-radius:24px;
+  overflow:hidden;
+
+  display:flex;
+}
+
+/* FORCE FULL SIZE */
+.stock-panel > div,
+.news-panel > div{
+  width:100%;
+  height:100%;
+}
+
+/* FIX IFRAME */
+iframe{
+  border:none !important;
+}
+
+</style>
+
+</head>
+
+<body>
+
 <div class="app">
 
 <div class="stock-panel">
@@ -79,7 +155,7 @@ iframe{
   "chartOnly":false,
   "colorTheme":"dark",
   "isTransparent":true,
-  "autosize":false
+  "autosize":true
 }
 </script>
 
@@ -108,6 +184,9 @@ iframe{
 </div>
 
 </div>
+
+</body>
+</html>
 
 </body>
 </html>
