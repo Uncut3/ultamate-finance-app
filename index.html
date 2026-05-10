@@ -18,71 +18,96 @@
 
 body{
   background:#141414;
-  color:white;
   font-family:-apple-system,BlinkMacSystemFont,sans-serif;
+  color:white;
   overflow:hidden;
 }
 
 /* =====================================================
-   LAYOUT
+   MAIN GRID LAYOUT
 ===================================================== */
 .app{
+
   width:100vw;
   height:100vh;
+
   display:grid;
-  grid-template-columns: 1fr 1fr;
-  gap:14px;
-  padding:14px;
+
+  /* CHART BIG + NEWS THIN */
+  grid-template-columns: 3fr 1fr;
+
+  gap:12px;
+
+  padding:12px;
+
 }
 
 /* =====================================================
    PANELS
 ===================================================== */
 .panel{
+
   background:#141414;
-  border-radius:24px;
+
+  border-radius:22px;
+
   overflow:hidden;
+
   position:relative;
+
 }
 
 /* =====================================================
-   STOCK PANEL
+   STOCK (BIG LEFT)
 ===================================================== */
 .stock-panel{
   grid-column:1;
-  grid-row:1 / span 2;
 }
 
 /* =====================================================
-   NEWS PANEL
+   NEWS (THIN RIGHT)
 ===================================================== */
 .news-panel{
   grid-column:2;
-  grid-row:1 / span 2;
+
+  display:flex;
+  flex-direction:column;
+
+  overflow:hidden;
+
 }
 
 /* =====================================================
-   WIDGET
+   NEWS SCROLL STYLE
 ===================================================== */
-.widget{
-  width:100%;
+.news-panel .widget{
+
   height:100%;
+
 }
 
-/* remove borders */
+/* =====================================================
+   TRADINGVIEW FIX
+===================================================== */
 iframe{
   border:none !important;
 }
 
 /* =====================================================
-   CLEAN GLASS EFFECT (optional subtle overlay)
+   SUBTLE GLASS LAYER
 ===================================================== */
 .panel::before{
+
   content:"";
+
   position:absolute;
+
   inset:0;
+
   background:rgba(255,255,255,.02);
+
   pointer-events:none;
+
 }
 
 </style>
@@ -93,7 +118,7 @@ iframe{
 <div class="app">
 
   <!-- =====================================================
-       STOCK PANEL
+       STOCK (BIG AREA)
   ====================================================== -->
   <div class="panel stock-panel">
 
@@ -120,7 +145,6 @@ iframe{
           "hideSymbolLogo":false,
           "scalePosition":"right",
           "scaleMode":"Normal",
-          "fontFamily":"-apple-system, BlinkMacSystemFont, sans-serif",
           "valuesTracking":"1",
           "changeMode":"price-and-percent"
         }
@@ -134,7 +158,7 @@ iframe{
   </div>
 
   <!-- =====================================================
-       NEWS PANEL
+       NEWS (THIN COLUMN)
   ====================================================== -->
   <div class="panel news-panel">
 
@@ -154,7 +178,7 @@ iframe{
           "feedMode":"all_symbols",
           "colorTheme":"dark",
           "isTransparent":true,
-          "displayMode":"regular",
+          "displayMode":"compact",
           "width":"100%",
           "height":"100%",
           "locale":"en"
