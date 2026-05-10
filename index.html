@@ -7,6 +7,9 @@
 
 <style>
 
+/* =====================================================
+   BASE
+===================================================== */
 *{
   margin:0;
   padding:0;
@@ -15,12 +18,14 @@
 
 body{
   background:#141414;
-  color:white;
+  color:#fff;
   font-family:-apple-system,BlinkMacSystemFont,sans-serif;
   overflow:hidden;
 }
 
-/* LAYOUT */
+/* =====================================================
+   LAYOUT
+===================================================== */
 .app{
   width:100vw;
   height:100vh;
@@ -28,7 +33,9 @@ body{
   padding:12px;
 }
 
-/* STOCK (BIG) */
+/* =====================================================
+   STOCK (MAIN CHART)
+===================================================== */
 .stock-panel{
   position:absolute;
   top:12px;
@@ -40,7 +47,9 @@ body{
   background:#141414;
 }
 
-/* NEWS (SIDE) */
+/* =====================================================
+   NEWS (SIDE)
+===================================================== */
 .news-panel{
   position:absolute;
   top:12px;
@@ -49,69 +58,145 @@ body{
   height:calc(100vh - 24px);
   border-radius:20px;
   overflow:hidden;
+  background:#141414;
 }
 
-/* SETTINGS BUTTON */
+/* =====================================================
+   SETTINGS BUTTON (TOP RIGHT)
+===================================================== */
 .settings-btn{
   position:absolute;
   top:16px;
   right:16px;
+
   width:42px;
   height:42px;
+
   display:flex;
   align-items:center;
   justify-content:center;
-  background:rgba(255,255,255,.05);
-  backdrop-filter:blur(16px);
+
+  font-size:18px;
+
+  background:rgba(255,255,255,.06);
+  backdrop-filter:blur(14px);
+
   border-radius:14px;
+
   cursor:pointer;
-  z-index:10;
+
+  z-index:20;
+
+  transition:.2s;
 }
 
-/* SETTINGS PANEL */
+.settings-btn:hover{
+  transform:scale(1.05);
+  background:rgba(255,255,255,.1);
+}
+
+/* =====================================================
+   SETTINGS PANEL
+===================================================== */
 .settings-panel{
   position:absolute;
   top:70px;
   right:16px;
+
   width:200px;
+
   padding:12px;
+
   border-radius:18px;
-  background:rgba(255,255,255,.05);
+
+  background:rgba(255,255,255,.06);
   backdrop-filter:blur(18px);
+
   display:none;
+
+  z-index:20;
 }
 
-.settings-panel.show{display:block}
+.settings-panel.show{
+  display:block;
+}
 
+/* buttons */
 .btn{
   flex:1;
   padding:10px;
   margin:4px;
-  background:rgba(255,255,255,.08);
-  border-radius:10px;
+
   text-align:center;
+
+  border-radius:10px;
+
+  background:rgba(255,255,255,.08);
+
   cursor:pointer;
+
+  user-select:none;
 }
 
-.row{display:flex;gap:6px}
+.btn:hover{
+  background:rgba(255,255,255,.14);
+}
 
-/* CHART */
-iframe{border:none !important}
+.row{
+  display:flex;
+  gap:6px;
+}
+
+/* =====================================================
+   LIGHT MODE
+===================================================== */
+body.light{
+  background:#f2f2f2;
+  color:#111;
+}
+
+body.light .stock-panel,
+body.light .news-panel{
+  background:#f2f2f2;
+}
+
+body.light .settings-btn,
+body.light .settings-panel{
+  background:rgba(0,0,0,.06);
+}
+
+body.light .btn{
+  background:rgba(0,0,0,.08);
+  color:#111;
+}
+
+body.light .btn:hover{
+  background:rgba(0,0,0,.14);
+}
+
+/* charts */
+iframe{
+  border:none !important;
+}
 
 </style>
 </head>
 
 <body>
 
+<div class="app">
+
 <!-- SETTINGS BUTTON -->
 <div class="settings-btn" onclick="toggleSettings()">⚙️</div>
 
 <!-- SETTINGS PANEL -->
 <div class="settings-panel" id="settingsPanel">
-<div class="row">
-<div class="btn" onclick="dark()">Dark</div>
-<div class="btn" onclick="light()">Light</div>
-</div>
+
+  <div class="row">
+    <div class="btn" onclick="setDark()">Dark</div>
+    <div class="btn" onclick="setLight()">Light</div>
+  </div>
+
 </div>
 
 <!-- STOCK -->
@@ -122,11 +207,11 @@ iframe{border:none !important}
 
 <script src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
 {
-"symbols":[["ASX:XJO|1D"]],
-"chartOnly":false,
-"colorTheme":"dark",
-"isTransparent":true,
-"autosize":true
+  "symbols":[["ASX:XJO|1D"]],
+  "chartOnly":false,
+  "colorTheme":"dark",
+  "isTransparent":true,
+  "autosize":true
 }
 </script>
 
@@ -142,12 +227,12 @@ iframe{border:none !important}
 
 <script src="https://s3.tradingview.com/external-embedding/embed-widget-timeline.js" async>
 {
-"feedMode":"all_symbols",
-"colorTheme":"dark",
-"isTransparent":true,
-"displayMode":"regular",
-"width":"100%",
-"height":"100%"
+  "feedMode":"all_symbols",
+  "colorTheme":"dark",
+  "isTransparent":true,
+  "displayMode":"regular",
+  "width":"100%",
+  "height":"100%"
 }
 </script>
 
@@ -155,18 +240,25 @@ iframe{border:none !important}
 
 </div>
 
+</div>
+
 <script>
 
+/* =========================
+   SETTINGS LOGIC (FIXED)
+========================= */
+
 function toggleSettings(){
-document.getElementById("settingsPanel").classList.toggle("show");
+  document.getElementById("settingsPanel")
+    .classList.toggle("show");
 }
 
-function dark(){
-document.body.classList.remove("light");
+function setDark(){
+  document.body.classList.remove("light");
 }
 
-function light(){
-document.body.classList.add("light");
+function setLight(){
+  document.body.classList.add("light");
 }
 
 </script>
