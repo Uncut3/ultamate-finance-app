@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
 <title>AWP Desktop</title>
 
 <style>
@@ -18,25 +19,79 @@
   outline:none;
 }
 
+:root{
+
+  /* DARK MODE */
+  --bg:#141414;
+  --glass:rgba(255,255,255,.05);
+  --text:white;
+  --bubble:rgba(255,255,255,.06);
+  --bubbleBorder:rgba(255,255,255,.14);
+
+}
+
+/* LIGHT MODE */
+body.light{
+
+  --bg:#f1f1f1;
+  --glass:rgba(255,255,255,.55);
+  --text:#111;
+  --bubble:rgba(255,255,255,.65);
+  --bubbleBorder:rgba(255,255,255,.4);
+
+}
+
 body{
-  background:#141414;
-  color:white;
-  font-family:-apple-system,BlinkMacSystemFont,sans-serif;
+
+  background:var(--bg);
+  color:var(--text);
+
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+
   overflow:hidden;
+
+  transition:
+    background .25s ease,
+    color .25s ease;
+
 }
 
 /* =========================================================
    APP
 ========================================================= */
 .app{
+
   width:100vw;
   height:100vh;
+
+  background:var(--bg);
+
+  transition:background .25s ease;
+
+}
+
+/* =========================================================
+   MAIN
+========================================================= */
+.main{
+
+  position:fixed;
+  inset:0;
+
+  bottom:100px;
+
+  overflow:hidden;
+
 }
 
 /* =========================================================
    PAGES
 ========================================================= */
 .page{
+
   position:absolute;
   inset:0;
 
@@ -44,36 +99,44 @@ body{
   pointer-events:none;
 
   transition:opacity .25s ease;
+
 }
 
 .page.active{
+
   opacity:1;
   pointer-events:auto;
+
 }
 
 /* =========================================================
    LAYOUT
 ========================================================= */
 .layout{
+
   width:100%;
   height:100%;
-  padding:20px 20px 100px 20px;
+
+  padding:20px 20px 0 20px;
+
 }
 
 /* =========================================================
-   WIDGETS
+   WIDGET
 ========================================================= */
 .widget{
+
   width:100%;
   height:100%;
 
   overflow:hidden;
 
-  background:#141414;
+  background:var(--bg);
+
+  border-radius:28px;
 
   opacity:.55;
 
-  border-radius:24px;
 }
 
 iframe{
@@ -81,9 +144,10 @@ iframe{
 }
 
 /* =========================================================
-   🍏 NAVIGATION BAR
+   🍏 NAV BAR
 ========================================================= */
 .nav{
+
   position:fixed;
 
   left:50%;
@@ -103,54 +167,67 @@ iframe{
 
   border-radius:30px;
 
-  background:rgba(255,255,255,.05);
+  background:var(--glass);
 
   backdrop-filter:blur(16px);
   -webkit-backdrop-filter:blur(16px);
 
   box-shadow:
     inset 0 0 8px rgba(255,255,255,.03),
-    0 10px 30px rgba(0,0,0,.55);
+    0 10px 30px rgba(0,0,0,.35);
 
   overflow:hidden;
 
   z-index:9999;
+
 }
 
 /* =========================================================
    ACTIVE BUBBLE
 ========================================================= */
 .active-pill{
+
   position:absolute;
 
   left:8px;
 
-  width:calc(50% - 8px);
+  width:calc(33.333% - 10px);
   height:56px;
 
   border-radius:22px;
 
-  background:rgba(255,255,255,.06);
+  background:var(--bubble);
 
-  border:1px solid rgba(255,255,255,.14);
+  border:1px solid var(--bubbleBorder);
 
   box-shadow:
     inset 0 0 8px rgba(255,255,255,.04);
 
   transition:
-    transform .35s cubic-bezier(.22,1,.36,1);
+    transform .35s cubic-bezier(.22,1,.36,1),
+    background .25s ease;
 
   z-index:0;
+
+}
+
+.active-pill.stock{
+  transform:translateX(0%);
+}
+
+.active-pill.settings{
+  transform:translateX(100%);
 }
 
 .active-pill.news{
-  transform:translateX(100%);
+  transform:translateX(200%);
 }
 
 /* =========================================================
    TABS
 ========================================================= */
 .tab{
+
   flex:1;
 
   height:100%;
@@ -165,17 +242,24 @@ iframe{
 
   border-radius:22px;
 
-  color:rgba(255,255,255,.6);
+  color:rgba(255,255,255,.65);
 
   transition:
     transform .22s ease,
     color .22s ease;
 
   user-select:none;
+
+  cursor:pointer;
+
+}
+
+body.light .tab{
+  color:rgba(0,0,0,.55);
 }
 
 .tab.active{
-  color:white;
+  color:var(--text);
 }
 
 .tab:hover{
@@ -187,27 +271,132 @@ iframe{
 }
 
 /* =========================================================
-   ICON
+   ICONS
 ========================================================= */
 .icon{
+
   font-size:22px;
 
   transition:
     transform .25s ease;
+
 }
 
 .tab.active .icon{
+
   transform:
     translateY(-1px)
     scale(1.08);
+
+}
+
+.label{
+
+  margin-top:4px;
+  font-size:11px;
+
 }
 
 /* =========================================================
-   LABEL
+   SETTINGS PANEL
 ========================================================= */
-.label{
-  margin-top:4px;
-  font-size:11px;
+.settings-panel{
+
+  position:fixed;
+
+  left:50%;
+  transform:translateX(-50%);
+
+  bottom:104px;
+
+  width:420px;
+
+  padding:14px;
+
+  border-radius:28px;
+
+  background:var(--glass);
+
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+
+  box-shadow:
+    inset 0 0 8px rgba(255,255,255,.03),
+    0 10px 30px rgba(0,0,0,.35);
+
+  opacity:0;
+  pointer-events:none;
+
+  transition:
+    opacity .25s ease,
+    transform .25s ease;
+
+  z-index:9998;
+
+}
+
+.settings-panel.show{
+
+  opacity:1;
+  pointer-events:auto;
+
+  transform:
+    translateX(-50%)
+    translateY(-8px);
+
+}
+
+/* =========================================================
+   SETTINGS NAV
+========================================================= */
+.settings-nav{
+
+  width:100%;
+
+  display:flex;
+
+  gap:10px;
+
+}
+
+/* =========================================================
+   SETTINGS BUTTONS
+========================================================= */
+.setting-btn{
+
+  flex:1;
+
+  height:54px;
+
+  border-radius:18px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  background:var(--bubble);
+
+  border:1px solid var(--bubbleBorder);
+
+  color:var(--text);
+
+  font-size:15px;
+  font-weight:500;
+
+  transition:
+    transform .2s ease,
+    background .25s ease;
+
+  cursor:pointer;
+
+}
+
+.setting-btn:hover{
+  transform:translateY(-1px);
+}
+
+.setting-btn:active{
+  transform:scale(.96);
 }
 
 </style>
@@ -217,49 +406,160 @@ iframe{
 
 <div class="app">
 
-  <!-- STOCK -->
-  <div class="page active" id="stockPage">
+  <div class="main">
 
-    <div class="layout">
+    <!-- =====================================================
+         STOCK PAGE
+    ====================================================== -->
+    <div class="page active" id="stockPage">
 
-      <div class="widget"></div>
+      <div class="layout">
+
+        <div class="widget">
+
+          <!-- TradingView Widget BEGIN -->
+          <div
+          class="tradingview-widget-container"
+          style="height:100%;width:100%;">
+
+            <div
+            class="tradingview-widget-container__widget"
+            style="height:100%;width:100%;"></div>
+
+            <script type="text/javascript"
+            src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js"
+            async>
+            {
+              "symbols": [["ASX:XJO|1D"]],
+              "chartOnly": true,
+              "width": "100%",
+              "height": "100%",
+              "locale": "en",
+              "colorTheme": "dark",
+              "autosize": true,
+              "hideSymbolLogo": true,
+              "chartType": "area"
+            }
+            </script>
+
+          </div>
+          <!-- TradingView Widget END -->
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- =====================================================
+         NEWS PAGE
+    ====================================================== -->
+    <div class="page" id="newsPage">
+
+      <div class="layout">
+
+        <div class="widget">
+
+          <!-- TradingView Widget BEGIN -->
+          <div
+          class="tradingview-widget-container"
+          style="height:100%;width:100%;">
+
+            <div
+            class="tradingview-widget-container__widget"
+            style="height:100%;width:100%;"></div>
+
+            <script type="text/javascript"
+            src="https://s3.tradingview.com/external-embedding/embed-widget-timeline.js"
+            async>
+            {
+              "feedMode": "all_symbols",
+              "isTransparent": true,
+              "displayMode": "regular",
+              "width": "100%",
+              "height": "100%",
+              "colorTheme": "dark",
+              "locale": "en"
+            }
+            </script>
+
+          </div>
+          <!-- TradingView Widget END -->
+
+        </div>
+
+      </div>
 
     </div>
 
   </div>
 
-  <!-- NEWS -->
-  <div class="page" id="newsPage">
+  <!-- =====================================================
+       SETTINGS PANEL
+  ====================================================== -->
+  <div class="settings-panel" id="settingsPanel">
 
-    <div class="layout">
+    <div class="settings-nav">
 
-      <div class="widget"></div>
+      <!-- DARK -->
+      <button
+      class="setting-btn"
+      onclick="setDarkMode()">
+
+        🌑 Dark
+
+      </button>
+
+      <!-- LIGHT -->
+      <button
+      class="setting-btn"
+      onclick="setLightMode()">
+
+        ☀️ Light
+
+      </button>
 
     </div>
 
   </div>
 
-  <!-- 🍏 NAV -->
+  <!-- =====================================================
+       🍏 NAVIGATION BAR
+  ====================================================== -->
   <div class="nav">
 
-    <div class="active-pill" id="pill"></div>
-
+    <!-- ACTIVE BUBBLE -->
     <div
-      class="tab active"
-      id="stockTab"
-      onclick="switchPage('stock')"
-    >
+    class="active-pill stock"
+    id="pill"></div>
+
+    <!-- STOCK -->
+    <div
+    class="tab active"
+    id="stockTab"
+    onclick="switchPage('stock')">
 
       <div class="icon">📈</div>
       <div class="label">Stock</div>
 
     </div>
 
+    <!-- SETTINGS -->
     <div
-      class="tab"
-      id="newsTab"
-      onclick="switchPage('news')"
-    >
+    class="tab"
+    id="settingsTab"
+    onclick="toggleSettings()">
+
+      <div class="icon">⚙️</div>
+      <div class="label">Settings</div>
+
+    </div>
+
+    <!-- NEWS -->
+    <div
+    class="tab"
+    id="newsTab"
+    onclick="switchPage('news')">
 
       <div class="icon">📰</div>
       <div class="label">News</div>
@@ -272,19 +572,48 @@ iframe{
 
 <script>
 
+/* =========================================================
+   ELEMENTS
+========================================================= */
+const stockPage=
+document.getElementById("stockPage");
+
+const newsPage=
+document.getElementById("newsPage");
+
+const stockTab=
+document.getElementById("stockTab");
+
+const settingsTab=
+document.getElementById("settingsTab");
+
+const newsTab=
+document.getElementById("newsTab");
+
+const settingsPanel=
+document.getElementById("settingsPanel");
+
+const pill=
+document.getElementById("pill");
+
+/* =========================================================
+   PAGE SWITCHING
+========================================================= */
 function switchPage(page){
 
-  const stockPage=document.getElementById("stockPage");
-  const newsPage=document.getElementById("newsPage");
-
-  const stockTab=document.getElementById("stockTab");
-  const newsTab=document.getElementById("newsTab");
-
-  const pill=document.getElementById("pill");
+  settingsPanel.classList.remove("show");
 
   stockTab.classList.remove("active");
+  settingsTab.classList.remove("active");
   newsTab.classList.remove("active");
 
+  pill.classList.remove(
+    "stock",
+    "settings",
+    "news"
+  );
+
+  /* STOCK */
   if(page==="stock"){
 
     stockPage.classList.add("active");
@@ -292,10 +621,11 @@ function switchPage(page){
 
     stockTab.classList.add("active");
 
-    pill.classList.remove("news");
+    pill.classList.add("stock");
 
   }
 
+  /* NEWS */
   else{
 
     newsPage.classList.add("active");
@@ -306,6 +636,45 @@ function switchPage(page){
     pill.classList.add("news");
 
   }
+
+}
+
+/* =========================================================
+   SETTINGS
+========================================================= */
+function toggleSettings(){
+
+  stockTab.classList.remove("active");
+  newsTab.classList.remove("active");
+
+  settingsTab.classList.add("active");
+
+  pill.classList.remove(
+    "stock",
+    "news"
+  );
+
+  pill.classList.add("settings");
+
+  settingsPanel.classList.toggle("show");
+
+}
+
+/* =========================================================
+   DARK MODE
+========================================================= */
+function setDarkMode(){
+
+  document.body.classList.remove("light");
+
+}
+
+/* =========================================================
+   LIGHT MODE
+========================================================= */
+function setLightMode(){
+
+  document.body.classList.add("light");
 
 }
 
