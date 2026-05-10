@@ -1,185 +1,80 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>AWP Desktop</title>
 
-<style>
-
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
-
-body{
-  background:#141414;
-  color:white;
-  font-family:-apple-system,BlinkMacSystemFont,sans-serif;
-  overflow:hidden;
-}
-
-/* LAYOUT */
+/* =====================================================
+   MAIN LAYOUT
+===================================================== */
 .app{
+
   width:100vw;
   height:100vh;
+
   position:relative;
+
   padding:12px;
+
 }
 
-/* STOCK (BIG) */
+/* =====================================================
+   STOCK (FULL HEIGHT FOCUS)
+===================================================== */
 .stock-panel{
+
   position:absolute;
+
   top:12px;
   left:12px;
-  right:344px;
-  bottom:12px;
+
+  right:344px; /* leaves space for news panel */
+
+  bottom:12px; /* THIS MAKES IT TALLER */
+
   border-radius:24px;
+
   overflow:hidden;
-  background:#141414;
+
+  z-index:1;
+
 }
 
-/* NEWS (SIDE) */
+/* =====================================================
+   NEWS PANEL (SIDE)
+===================================================== */
 .news-panel{
+
   position:absolute;
+
   top:12px;
   right:12px;
+
   width:320px;
+
   height:calc(100vh - 24px);
+
   border-radius:20px;
+
   overflow:hidden;
+
+  z-index:2;
+
 }
 
-/* SETTINGS BUTTON */
-.settings-btn{
+/* =====================================================
+   CLEAN WIDGET FIX
+===================================================== */
+iframe{
+  border:none !important;
+}
+
+/* subtle glass overlay */
+.panel::before{
+
+  content:"";
+
   position:absolute;
-  top:16px;
-  right:16px;
-  width:42px;
-  height:42px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:rgba(255,255,255,.05);
-  backdrop-filter:blur(16px);
-  border-radius:14px;
-  cursor:pointer;
-  z-index:10;
+
+  inset:0;
+
+  background:rgba(255,255,255,.02);
+
+  pointer-events:none;
+
 }
-
-/* SETTINGS PANEL */
-.settings-panel{
-  position:absolute;
-  top:70px;
-  right:16px;
-  width:200px;
-  padding:12px;
-  border-radius:18px;
-  background:rgba(255,255,255,.05);
-  backdrop-filter:blur(18px);
-  display:none;
-}
-
-.settings-panel.show{display:block}
-
-.btn{
-  flex:1;
-  padding:10px;
-  margin:4px;
-  background:rgba(255,255,255,.08);
-  border-radius:10px;
-  text-align:center;
-  cursor:pointer;
-}
-
-.row{display:flex;gap:6px}
-
-/* CHART */
-iframe{border:none !important}
-
-</style>
-</head>
-
-<body>
-<div class="settings-btn" onclick="toggleSettings()">⚙️</div>
-
-<div class="settings-panel" id="settingsPanel">
-
-  <div class="row">
-    <div class="btn" onclick="setDark()">Dark</div>
-    <div class="btn" onclick="setLight()">Light</div>
-  </div>
-
-</div>
-
-<!-- SETTINGS BUTTON -->
-<div class="settings-btn" onclick="toggleSettings()">⚙️</div>
-
-<!-- SETTINGS PANEL -->
-<div class="settings-panel" id="settingsPanel">
-<div class="row">
-<div class="btn" onclick="dark()">Dark</div>
-<div class="btn" onclick="light()">Light</div>
-</div>
-</div>
-
-<!-- STOCK -->
-<div class="stock-panel">
-
-<div class="tradingview-widget-container" style="height:100%;width:100%;">
-<div class="tradingview-widget-container__widget"></div>
-
-<script src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
-{
-"symbols":[["ASX:XJO|1D"]],
-"chartOnly":false,
-"colorTheme":"dark",
-"isTransparent":true,
-"autosize":true
-}
-</script>
-
-</div>
-
-</div>
-
-<!-- NEWS -->
-<div class="news-panel">
-
-<div class="tradingview-widget-container" style="height:100%;width:100%;">
-<div class="tradingview-widget-container__widget"></div>
-
-<script src="https://s3.tradingview.com/external-embedding/embed-widget-timeline.js" async>
-{
-"feedMode":"all_symbols",
-"colorTheme":"dark",
-"isTransparent":true,
-"displayMode":"regular",
-"width":"100%",
-"height":"100%"
-}
-</script>
-
-</div>
-
-</div>
-
-<script>
-
-function toggleSettings(){
-document.getElementById("settingsPanel").classList.toggle("show");
-}
-
-function dark(){
-document.body.classList.remove("light");
-}
-
-function light(){
-document.body.classList.add("light");
-}
-
-</script>
-
-</body>
-</html>
