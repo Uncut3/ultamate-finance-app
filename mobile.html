@@ -6,29 +6,33 @@
 <title>AWP Mobile</title>
 
 <style>
+/* =========================
+   UNIFIED DARK SURFACE
+========================= */
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Arial;
-  background: #000;
+  background: #141414; /* MAIN BACKGROUND */
   color: #d0d0d0;
   overflow: hidden;
 }
 
-/* APP */
+/* APP WRAPPER */
 .app {
   position: fixed;
   inset: 0;
-  background: #000;
+  background: #141414;
 }
 
-/* MAIN AREA */
+/* MAIN AREA (NAV SAFE SPACE) */
 .main {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  bottom: 90px; /* keeps space for nav */
+  bottom: 90px;
   overflow: hidden;
+  background: #141414;
 }
 
 /* PAGES */
@@ -38,21 +42,24 @@ body {
   transform: translateX(100%);
   transition: transform 0.35s ease;
   overflow: hidden;
-  background: #000;
+  background: #141414; /* MATCHED */
 }
 
 .page.active {
   transform: translateX(0);
 }
 
-/* 🔥 FIX: REDUCED WIDGET HEIGHT AREA */
+/* WIDGET CONTAINERS */
 #stockContainer,
 #newsContainer {
   width: 100%;
-  height: 92%; /* reduced so it never touches nav zone */
+  height: 92%;
+  background: #141414; /* MATCHED SURFACE */
 }
 
-/* NAV */
+/* =========================
+   FLOATING NAV BAR
+========================= */
 .nav {
   position: fixed;
   left: 50%;
@@ -66,12 +73,14 @@ body {
   justify-content: space-around;
   align-items: center;
 
-  background: rgba(15,15,15,0.78);
-  backdrop-filter: blur(25px);
+  background: rgba(20,20,20,0.85);
+  backdrop-filter: blur(20px);
+
   border-radius: 30px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.85);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
 }
 
+/* NAV ITEMS */
 .tab {
   display: flex;
   flex-direction: column;
@@ -151,7 +160,7 @@ function setTab(page) {
   else document.querySelectorAll(".tab")[1].classList.add("active");
 }
 
-/* STOCK */
+/* STOCK (DARK MATCHED) */
 function loadStock() {
   stockLoaded = true;
 
@@ -167,13 +176,14 @@ function loadStock() {
     width: "100%",
     height: "100%",
     autosize: true,
-    colorTheme: "dark"
+    colorTheme: "dark",
+    backgroundColor: "#141414"
   });
 
   c.appendChild(s);
 }
 
-/* NEWS */
+/* NEWS (DARK MATCHED) */
 function loadNews() {
   newsLoaded = true;
 
@@ -188,7 +198,8 @@ function loadNews() {
     width: "100%",
     height: "100%",
     autosize: true,
-    colorTheme: "dark"
+    colorTheme: "dark",
+    backgroundColor: "#141414"
   });
 
   c.appendChild(s);
