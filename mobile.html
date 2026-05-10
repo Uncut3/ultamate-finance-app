@@ -3,9 +3,49 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>AWP Mobile</title>
+<title>XJO status</title>
 
 <style>
+
+.icon img{
+  width:22px;
+  height:22px;
+  object-fit:contain;
+}
+
+#loader{
+  position:fixed;
+  inset:0;
+  background:var(--bg);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  z-index:99999;
+
+  /* this is what makes the fade work */
+  opacity:1;
+  transition:opacity 0.4s ease;
+}
+
+.logo{
+  width:80px;
+  height:80px;
+  object-fit:contain;
+  margin-bottom:10px;
+}
+
+.title{
+  font-size:20px;
+  font-weight:600;
+  letter-spacing:1px;
+}
+
+.subtitle{
+  font-size:12px;
+  opacity:0.6;
+  margin-top:6px;
+}
 
 *{
   margin:0;
@@ -135,6 +175,13 @@ body{
 
 <body>
 
+
+<div id="loader">
+  <img class="logo" src="logo.png" alt="XJO Status Logo"/>
+  <div class="title">XJO Status</div>
+  <div class="subtitle">Loading market data...</div>
+</div>
+
 <!-- STOCK -->
 <div class="page active" id="stock">
 <div class="widget">
@@ -191,21 +238,25 @@ body{
 
   <div class="pill" id="pill"></div>
 
-  <div class="tab" onmouseenter="hoverTab(0)" onclick="go('stock')">
-    <div class="icon">📈</div>
-    <div class="label">Stock</div>
+<div class="tab" onmouseenter="hoverTab(0)" onclick="go('stock')">
+  <div class="icon">
+    <img src="icons/stock.png" alt="Stock">
   </div>
+  <div class="label">Stock</div>
+</div>
 
-  <div class="tab" onmouseenter="hoverTab(1)" onclick="toggleSettings()">
-    <div class="icon">⚙️</div>
-    <div class="label">Settings</div>
+<div class="tab" onmouseenter="hoverTab(1)" onclick="toggleSettings()">
+  <div class="icon">
+    <img src="icons/settings.png" alt="Settings">
   </div>
+  <div class="label">Settings</div>
+</div>
 
-  <div class="tab" onmouseenter="hoverTab(2)" onclick="go('news')">
-    <div class="icon">📰</div>
-    <div class="label">News</div>
+<div class="tab" onmouseenter="hoverTab(2)" onclick="go('news')">
+  <div class="icon">
+    <img src="icons/news.png" alt="News">
   </div>
-
+  <div class="label">News</div>
 </div>
 
 <script>
@@ -241,6 +292,19 @@ document.body.classList.remove("light");
 function light(){
 document.body.classList.add("light");
 }
+
+window.addEventListener("load", () => {
+  setTimeout(() => {
+    const loader = document.getElementById("loader");
+
+    loader.style.opacity = "0";
+
+    setTimeout(() => {
+      loader.style.display = "none";
+    }, 400);
+
+  }, 800);
+});
 
 </script>
 
