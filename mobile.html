@@ -20,7 +20,7 @@ html, body{
   overflow:hidden;
 }
 
-/* DARK BASE */
+/* BODY */
 body{
   background:#141414;
   color:#fff;
@@ -46,7 +46,7 @@ body{
   object-fit:contain;
 }
 
-/* APP LAYOUT */
+/* APP */
 .app{
   position:absolute;
   inset:0;
@@ -55,30 +55,23 @@ body{
   padding:12px;
 }
 
-/* 🔥 GLASS PANELS RESTORED */
-.stock-panel,
-.news-panel{
+/* STOCK */
+.stock-panel{
+  flex:1;
   position:relative;
   border-radius:24px;
   overflow:hidden;
-
-  background:rgba(255,255,255,0.04);
-  backdrop-filter:blur(18px);
-  -webkit-backdrop-filter:blur(18px);
-
-  border:1px solid rgba(255,255,255,0.08);
 }
 
-/* SIZE */
-.stock-panel{
-  flex:1;
-}
-
+/* NEWS */
 .news-panel{
   width:320px;
+  position:relative;
+  border-radius:20px;
+  overflow:hidden;
 }
 
-/* 🔥 FINLOGIX FULL FILL */
+/* FILL FIX */
 .finlogix-container,
 .tradingview-widget-container{
   position:absolute;
@@ -87,12 +80,7 @@ body{
   height:100%;
 }
 
-/* REMOVE BLOCKING BACKGROUND ONLY FOR WIDGET */
-.finlogix-container{
-  background:transparent !important;
-}
-
-/* SAFETY */
+/* CLEAN IFRAME */
 iframe{
   border:none;
 }
@@ -110,7 +98,7 @@ iframe{
 <!-- APP -->
 <div class="app">
 
-  <!-- STOCK -->
+  <!-- STOCK (FINLOGIX) -->
   <div class="stock-panel">
 
     <div class="finlogix-container"></div>
@@ -154,18 +142,13 @@ window.addEventListener("load", () => {
         type: "SymbolChartList",
         language: "en",
         symbolIds: [5,19,44,547,554,129,157],
-
         isAdaptive: true,
-
-        // keep clean glass look
-        withBorderBox: false,
-        isTransparent: true
+        withBorderBox: true
       });
     }
 
   }, 300);
 
-  // loader fade
   const loader = document.getElementById("loader");
   setTimeout(() => {
     loader.style.opacity = "0";
