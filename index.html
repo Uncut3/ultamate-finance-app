@@ -298,8 +298,26 @@ z-index:2;
 
 <script>
 
+function initChart(){
+
+  localStorage.setItem("lastStock", savedStock);
+
+  chart = new TradingView.widget({
+    container_id: "chart",
+    symbol: savedStock,
+    interval: "D",
+    theme: document.body.classList.contains("light") ? "light" : "dark",
+    style: "1",
+    autosize: true,
+    allow_symbol_change: true,
+    hide_top_toolbar: false,
+    hide_side_toolbar: false,
+    withdateranges: true,
+    backgroundColor: "rgba(0,0,0,0)",
+  });
+}
+
 function saveStock(symbol){
-  localStorage.setItem("lastStock", symbol);
 }
 
 let savedStock = localStorage.getItem("lastStock") || "ASX:AXJO";
