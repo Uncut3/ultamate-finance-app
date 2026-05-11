@@ -298,29 +298,48 @@ z-index:2;
 
 <script>
 
+let savedStock = localStorage.getItem("lastStock") || "ASX:AXJO";
+
+function saveStock(symbol){
+  savedStock = symbol;
+  localStorage.setItem("lastStock", symbol);
+  reloadChart();
+}
+
 function initChart(){
 
-  localStorage.setItem("lastStock", savedStock);
+  const isLight = document.body.classList.contains("light");
 
   chart = new TradingView.widget({
     container_id: "chart",
     symbol: savedStock,
     interval: "D",
-    theme: document.body.classList.contains("light") ? "light" : "dark",
+
+    theme: isLight ? "light" : "dark",
+
     style: "1",
     autosize: true,
+
     allow_symbol_change: true,
     hide_top_toolbar: false,
     hide_side_toolbar: false,
     withdateranges: true,
+
     backgroundColor: "rgba(0,0,0,0)",
+
+    overrides: {
+      "paneProperties.background": "rgba(0,0,0,0)",
+
+      "paneProperties.vertGridProperties.color":
+        isLight ? "rgba(0,0,0,0.05)" : "rgba(255,255,255,0.03)",
+
+      "paneProperties.horzGridProperties.color":
+        isLight ? "rgba(0,0,0,0.05)" : "rgba(255,255,255,0.03)",
+
+      "scalesProperties.backgroundColor": "rgba(0,0,0,0)"
+    }
   });
 }
-
-function saveStock(symbol){
-}
-
-let savedStock = localStorage.getItem("lastStock") || "ASX:AXJO";
 
 /* =========================
    AXJO CHART
