@@ -331,8 +331,8 @@ function initChart(){
 
   chart = new TradingView.widget({
     container_id: "chart",
-    symbol: savedStock,
-    interval: "D",
+    symbol: localStorage.getItem("lastStock") || "ASX:AXJO",
+    interval: "1",
 
     theme: document.body.classList.contains("light") ? "light" : "dark",
     style: "1",
