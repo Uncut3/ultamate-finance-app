@@ -5,12 +5,383 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no"/>
 <title>XJO Status</title>
 
-<meta name="theme-color" content="#141414">
-<link rel="apple-touch-icon" href="icon/icon.png">
-
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
-
-<link rel="manifest" href="/manifest.json">
-
 <script src="https://s3.tradingview.com/tv.js"></script>
+
+<style>
+
+/* =========================
+   RESET
+========================= */
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+:root{
+--bg:#141414;
+--glass:rgba(255,255,255,.05);
+--text:#fff;
+--bubble:rgba(255,255,255,.06);
+--border:rgba(255,255,255,.14);
+}
+
+body.light{
+--bg:#f2f2f2;
+--glass:rgba(255,255,255,.6);
+--text:#111;
+--bubble:rgba(0,0,0,.06);
+--border:rgba(0,0,0,.12);
+}
+
+body{
+background:var(--bg);
+color:var(--text);
+font-family:-apple-system,BlinkMacSystemFont,sans-serif;
+overflow:hidden;
+}
+
+/* =========================
+   SAFE AREA FIX
+========================= */
+.app{
+position:fixed;
+inset:0;
+padding-bottom: calc(100px + env(safe-area-inset-bottom));
+}
+
+/* =========================
+   LOADER
+========================= */
+#loader{
+position:fixed;
+inset:0;
+background:var(--bg);
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+z-index:99999;
+transition:opacity .4s ease;
+}
+
+.logo{
+width:80px;
+height:80px;
+object-fit:contain;
+margin-bottom:10px;
+}
+
+/* =========================
+   PAGES
+========================= */
+.page{
+position:absolute;
+inset:0;
+bottom: calc(100px + env(safe-area-inset-bottom));
+opacity:0;
+visibility:hidden;
+pointer-events:none;
+}
+
+.page.active{
+opacity:1;
+visibility:visible;
+pointer-events:auto;
+}
+
+/* =========================
+   CHART
+========================= */
+#chart{
+width:100%;
+height:100%;
+}
+
+/* =========================
+   NEWS (AUSTRALIA FEED)
+========================= */
+#newsBox{
+position:absolute;
+inset:0;
+padding:14px;
+overflow-y:auto;
+padding-bottom: calc(120px + env(safe-area-inset-bottom));
+}
+
+.newsItem{
+background:var(--glass);
+backdrop-filter:blur(18px);
+border:1px solid var(--border);
+padding:14px;
+border-radius:16px;
+margin-bottom:12px;
+}
+
+.newsTitle{
+font-size:14px;
+font-weight:600;
+margin-bottom:6px;
+}
+
+.newsMeta{
+font-size:11px;
+opacity:.7;
+}
+
+.newsItem a{
+color:var(--text);
+text-decoration:none;
+}
+
+/* =========================
+   SETTINGS
+========================= */
+.settings{
+position:fixed;
+bottom: calc(100px + env(safe-area-inset-bottom));
+left:50%;
+transform:translateX(-50%);
+width:90%;
+padding:14px;
+background:var(--glass);
+backdrop-filter:blur(18px);
+border-radius:24px;
+display:none;
+z-index:50;
+}
+
+.settings.show{display:block;}
+
+.row{display:flex;}
+
+.btn{
+flex:1;
+padding:12px;
+text-align:center;
+background:var(--bubble);
+border-radius:14px;
+margin:5px;
+}
+
+/* =========================
+   NAV SAFE FIX
+========================= */
+.nav{
+position:fixed;
+left:50%;
+transform:translateX(-50%);
+bottom: calc(14px + env(safe-area-inset-bottom));
+width:90%;
+height:72px;
+display:flex;
+background:var(--glass);
+backdrop-filter:blur(16px);
+border-radius:30px;
+overflow:hidden;
+z-index:1000;
+}
+
+.pill{
+position:absolute;
+width:33.3%;
+height:100%;
+left:0;
+background:var(--bubble);
+border:1px solid var(--border);
+transition:transform .35s ease;
+}
+
+.tab{
+flex:1;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+z-index:2;
+}
+
+.icon img{width:22px;height:22px;}
+
+.label{font-size:11px;margin-top:4px;}
+
+</style>
+</head>
+
+<body>
+
+<div id="loader">
+  <img class="logo" src="icon/icon.png">
+  <div style="font-size:20px;font-weight:600;">XJO Status</div>
+  <div style="font-size:12px;opacity:.6;">Loading market data...</div>
+</div>
+
+<div class="app">
+
+<!-- STOCK -->
+<div class="page active" id="stock">
+  <div id="chart"></div>
+</div>
+
+<!-- NEWS -->
+<div class="page" id="news">
+  <div id="newsBox"></div>
+</div>
+
+<!-- SETTINGS -->
+<div class="settings" id="settingsPanel">
+  <div class="row">
+    <div class="btn" onclick="dark()">Dark</div>
+    <div class="btn" onclick="light()">Light</div>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="nav">
+
+  <div class="pill" id="pill"></div>
+
+  <div class="tab" onmouseenter="hoverTab(0)" onclick="go('stock')">
+    <div class="icon"><img src="icon/stock.png"></div>
+    <div class="label">Stock</div>
+  </div>
+
+  <div class="tab" onmouseenter="hoverTab(1)" onclick="toggleSettings()">
+    <div class="icon"><img src="icon/settings.png"></div>
+    <div class="label">Settings</div>
+  </div>
+
+  <div class="tab" onmouseenter="hoverTab(2)" onclick="go('news')">
+    <div class="icon"><img src="icon/news.png"></div>
+    <div class="label">News</div>
+  </div>
+
+</div>
+
+</div>
+
+<script>
+
+/* =========================
+   AXJO CHART
+========================= */
+function initChart(){
+
+new TradingView.widget({
+  container_id: "chart",
+  symbol: "ASX:AXJO",
+  interval: "D",
+  theme: "dark",
+  style: "1",
+  autosize: true,
+  allow_symbol_change: true,
+  hide_top_toolbar: false,
+  hide_side_toolbar: false,
+  withdateranges: true
+});
+
+}
+
+/* =========================
+   AUSTRALIA NEWS (WORKING)
+========================= */
+async function loadNews(){
+
+const url =
+"https://api.rss2json.com/v1/api.json?rss_url=" +
+encodeURIComponent("https://news.google.com/rss/search?q=Australia+finance&hl=en-AU&gl=AU&ceid=AU:en");
+
+try{
+
+const res = await fetch(url);
+const data = await res.json();
+
+const box = document.getElementById("newsBox");
+box.innerHTML = "";
+
+data.items.slice(0,25).forEach(item=>{
+
+const div = document.createElement("div");
+div.className = "newsItem";
+
+div.innerHTML = `
+<a href="${item.link}" target="_blank">
+  <div class="newsTitle">${item.title}</div>
+  <div class="newsMeta">${new Date(item.pubDate).toLocaleString()}</div>
+</a>
+`;
+
+box.appendChild(div);
+
+});
+
+}catch(e){
+
+document.getElementById("newsBox").innerHTML =
+"<div style='opacity:.6'>Failed to load Australian news</div>";
+
+}
+
+}
+
+/* =========================
+   NAV SYSTEM
+========================= */
+let activeTab = 0;
+const pill = document.getElementById("pill");
+
+function hoverTab(i){
+pill.style.transform = `translateX(${i*100}%)`;
+}
+
+function go(page){
+
+document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+document.getElementById(page).classList.add("active");
+
+document.getElementById("settingsPanel").classList.remove("show");
+
+if(page==="stock"){
+activeTab=0;
+pill.style.transform="translateX(0%)";
+}
+
+if(page==="news"){
+activeTab=2;
+pill.style.transform="translateX(200%)";
+loadNews(); // 🔥 LOAD AU NEWS ONLY WHEN OPENED
+}
+}
+
+/* SETTINGS */
+function toggleSettings(){
+const panel=document.getElementById("settingsPanel");
+panel.classList.toggle("show");
+
+activeTab = panel.classList.contains("show") ? 1 : 0;
+pill.style.transform = `translateX(${activeTab*100}%)`;
+}
+
+/* THEME */
+function dark(){document.body.classList.remove("light");}
+function light(){document.body.classList.add("light");}
+
+/* LOAD */
+window.addEventListener("load",()=>{
+
+initChart();
+
+setTimeout(()=>{
+document.getElementById("loader").style.opacity="0";
+setTimeout(()=>document.getElementById("loader").style.display="none",400);
+},800);
+
+});
+
+document.addEventListener("gesturestart",e=>e.preventDefault());
+
+</script>
+
+</body>
+</html>
