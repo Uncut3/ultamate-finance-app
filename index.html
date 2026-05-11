@@ -30,10 +30,12 @@ body.light{
 }
 
 body{
-background:var(--bg);
-color:var(--text);
-font-family:-apple-system,BlinkMacSystemFont,sans-serif;
-overflow:hidden;
+  background:var(--bg);
+  color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,sans-serif;
+  overflow:hidden;
+
+  padding-bottom: calc(100px + env(safe-area-inset-bottom));
 }
 
 #loader{
@@ -61,15 +63,23 @@ inset:0;
 }
 
 .page{
-position:absolute;
-inset:0;
-opacity:0;
-pointer-events:none;
+  position:absolute;
+  inset:0;
+
+  padding-bottom: calc(100px + env(safe-area-inset-bottom));
+  box-sizing: border-box;
+
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+
+  transition:opacity 0.2s ease;
 }
 
 .page.active{
-opacity:1;
-pointer-events:auto;
+  opacity:1;
+  visibility:visible;
+  pointer-events:auto;
 }
 
 .widget{
@@ -168,6 +178,7 @@ margin:5px;
 
 <body>	
 
+
 <link rel="manifest" href="/manifest.json">
 
 <!-- LOADER -->
@@ -232,88 +243,92 @@ margin:5px;
 
   <div class="pill" id="pill"></div>
 
-  <div class="tab" onclick="go('stock')">
+  <!-- STOCK TAB -->
+  <div class="tab"
+       onmouseenter="hoverTab(0)"
+       onmouseleave="resetHover()"
+       onclick="go('stock')">
+
     <div class="icon"><img src="icon/stock.png"></div>
     <div class="label">Stock</div>
   </div>
 
-  <div class="tab" onclick="toggleSettings()">
+  <!-- SETTINGS TAB -->
+  <div class="tab"
+       onmouseenter="hoverTab(1)"
+       onmouseleave="resetHover()"
+       onclick="toggleSettings()">
+
     <div class="icon"><img src="icon/settings.png"></div>
     <div class="label">Settings</div>
   </div>
 
-  <div class="tab" onclick="go('news')">
+  <!-- NEWS TAB -->
+  <div class="tab"
+       onmouseenter="hoverTab(2)"
+       onmouseleave="resetHover()"
+       onclick="go('news')">
+
     <div class="icon"><img src="icon/news.png"></div>
     <div class="label">News</div>
   </div>
 
 </div>
 
+</div>
+
 <script>
+
+chart.subscribeCrosshairMove((param) => {
+  // detect cursor position
+});
+
 const pill = document.getElementById("pill");
 
-let activeTab = 0; 
-// 0 = stock, 1 = settings, 2 = news
-
-function setTab(i){
-  activeTab = i;
-  pill.style.transform = `translateX(${i * 100}%)`;
-}
-
-/* NAV SWITCH */
 function go(page){
 
-  document.querySelectorAll(".page").forEach(p=>{
-    p.classList.remove("active");
-  });
+document.querySelectorAll(".page").forEach(p=>{
+p.classList.remove("active");
+});
 
-  document.getElementById(page).classList.add("active");
+document.getElementById(page).classList.add("active");
 
-  document.getElementById("settingsPanel").classList.remove("show");
+if(page === "stock") pill.style.transform = "translateX(0%)";
+if(page === "news") pill.style.transform = "translateX(200%)";
 
-  if(page === "stock") setTab(0);
-  if(page === "news") setTab(2);
+document.getElementById("settingsPanel").classList.remove("show");
 }
 
-/* SETTINGS (FIXED) */
 function toggleSettings(){
-
-  const panel = document.getElementById("settingsPanel");
-  panel.classList.toggle("show");
-
-  if(panel.classList.contains("show")){
-    setTab(1); // move bubble to settings
-  } else {
-    setTab(0); // return to stock (or keep last tab later if you want upgrade)
-  }
+document.getElementById("settingsPanel").classList.toggle("show");
 }
 
-/* THEME */
 function dark(){
-  document.body.classList.remove("light");
+document.body.classList.remove("light");
 }
 
 function light(){
-  document.body.classList.add("light");
+document.body.classList.add("light");
 }
 
-/* LOADER */
 window.addEventListener("load", ()=>{
+const loader = document.getElementById("loader");
 
-  const loader = document.getElementById("loader");
-
-  setTimeout(()=>{
-
-    loader.style.opacity = "0";
-
-    setTimeout(()=>{
-      loader.style.display = "none";
-    },400);
-
-  },800);
-
+setTimeout(()=>{
+loader.style.opacity = "0";
+setTimeout(()=>loader.style.display="none",400);
+},800);
 });
 
-/* DISABLE ZOOM (mobile) */
-document.addEventListener("gesturestart", e => e.preventDefault());
-<script>
+/* disable zoom */
+document.addEventListener("gesturestart", e=>e.preventDefault());
+
+function hoverTab(i){
+  pill.style.transform = `translateX(${i * 100}%)`;
+}
+
+function resetHover(){
+  pill.style.transform = `translateX(${activeTab * 100}%)`;
+}
+
+</script>
