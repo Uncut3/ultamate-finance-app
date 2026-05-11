@@ -30,7 +30,7 @@ box-sizing:border-box;
 }
 
 :root{
---bg:#141414;
+--bg:#000000;
 --glass:rgba(255,255,255,.05);
 --text:#fff;
 --bubble:rgba(255,255,255,.06);
@@ -43,6 +43,14 @@ body.light{
 --text:#111;
 --bubble:rgba(0,0,0,.06);
 --border:rgba(0,0,0,.12);
+}
+
+body.black{
+--bg:#000000;
+--glass:rgba(255,255,255,.04);
+--text:#ffffff;
+--bubble:rgba(255,255,255,.05);
+--border:rgba(255,255,255,.08);
 }
 
 body{
@@ -247,8 +255,45 @@ z-index:2;
     <div class="btn" onclick="light()">Light</div>
   </div>
 </div>
+<!-- NAV -->
+<div class="nav">
 
+  <div class="pill" id="pill"></div>
 
+  <!-- STOCK -->
+  <div class="tab" onmouseenter="hoverTab(0)" onclick="go('stock')">
+
+    <div class="icon">
+      <img id="stockIcon" src="icon/dark-stock.png">
+    </div>
+
+    <div class="label">Stock</div>
+
+  </div>
+
+  <!-- SETTINGS -->
+  <div class="tab" onmouseenter="hoverTab(1)" onclick="toggleSettings()">
+
+    <div class="icon">
+      <img id="settingsIcon" src="icon/dark-settings.png">
+    </div>
+
+    <div class="label">Settings</div>
+
+  </div>
+
+  <!-- NEWS -->
+  <div class="tab" onmouseenter="hoverTab(2)" onclick="go('news')">
+
+    <div class="icon">
+      <img id="newsIcon" src="icon/dark-news.png">
+    </div>
+
+    <div class="label">News</div>
+
+  </div>
+
+</div>
 </div>
 
 <script>
@@ -256,30 +301,48 @@ z-index:2;
 /* =========================
    AXJO CHART
 ========================= */
+let chart = null;
+
 function initChart(){
 
-new TradingView.widget({
-  container_id: "chart",
-  symbol: "ASX:AXJO",
-  interval: "D",
-  theme: "dark",
-  style: "1",
-  autosize: true,
+  chart = new TradingView.widget({
+    container_id: "chart",
+    symbol: "ASX:AXJO",
+    interval: "D",
 
-  /* TRANSPARENT BACKGROUND */
-  backgroundColor: "rgba(0,0,0,0)",
+    theme: document.body.classList.contains("light") ? "light" : "dark",
+    style: "1",
+    autosize: true,
 
-  overrides: {
-    "paneProperties.background": "rgba(0,0,0,0)",
+    allow_symbol_change: true,
+    hide_top_toolbar: false,
+    hide_side_toolbar: false,
+    withdateranges: true,
 
-    /* grid lines (very faint) */
-    "paneProperties.vertGridProperties.color": "rgba(255,255,255,0.03)",
-    "paneProperties.horzGridProperties.color": "rgba(255,255,255,0.03)",
+    backgroundColor: "rgba(0,0,0,0)",
 
-    "scalesProperties.backgroundColor": "rgba(0,0,0,0)"
-  }
-});
+    overrides: {
+      "paneProperties.background": "rgba(0,0,0,0)",
 
+      "paneProperties.vertGridProperties.color":
+        document.body.classList.contains("light")
+          ? "rgba(0,0,0,0.05)"
+          : "rgba(255,255,255,0.03)",
+
+      "paneProperties.horzGridProperties.color":
+        document.body.classList.contains("light")
+          ? "rgba(0,0,0,0.05)"
+          : "rgba(255,255,255,0.03)",
+
+      "scalesProperties.backgroundColor": "rgba(0,0,0,0)"
+    }
+  });
+}
+
+/* used when theme changes */
+function reloadChart(){
+  document.getElementById("chart").innerHTML = "";
+  initChart();
 }
 /* =========================
    AUSTRALIA NEWS (WORKING)
@@ -366,10 +429,17 @@ pill.style.transform = `translateX(${activeTab*100}%)`;
 ========================= */
 
 /* LOAD SAVED THEME */
-if(localStorage.getItem("theme") === "light"){
+const savedTheme = localStorage.getItem("theme");
+
+if(savedTheme === "light"){
   document.body.classList.add("light");
-}else{
+}
+else if(savedTheme === "black"){
+  document.body.classList.add("black");
+}
+else{
   document.body.classList.remove("light");
+  document.body.classList.remove("black");
 }
 
 /* UPDATE NAV ICONS */
@@ -377,52 +447,76 @@ function updateIcons(){
 
   const isLight = document.body.classList.contains("light");
 
-  /* STOCK ICON */
   document.getElementById("stockIcon").src =
     isLight
       ? "icon/light-stock.png"
       : "icon/dark-stock.png";
 
-  /* SETTINGS ICON */
   document.getElementById("settingsIcon").src =
     isLight
       ? "icon/light-settings.png"
       : "icon/dark-settings.png";
 
-  /* NEWS ICON */
   document.getElementById("newsIcon").src =
     isLight
       ? "icon/light-news.png"
       : "icon/dark-news.png";
 }
 
+/* RELOAD CHART */
+function reloadChart(){
+
+  document.getElementById("chart").innerHTML = "";
+
+  initChart();
+}
+
 /* DARK MODE */
 function dark(){
 
   document.body.classList.remove("light");
-
   localStorage.setItem("theme","dark");
 
   updateIcons();
+  reloadChart(); // 🔥 important
 }
 
 /* LIGHT MODE */
 function light(){
 
-
   document.body.classList.add("light");
-
   localStorage.setItem("theme","light");
 
   updateIcons();
+  reloadChart(); // 🔥 important
 }
 
-/* RUN ON APP LOAD */
+/* =========================
+   LOAD APP
+========================= */
 window.addEventListener("load",()=>{
 
+  /* LOAD THEME ICONS */
   updateIcons();
 
+  /* LOAD CHART */
+  initChart();
+
+  /* HIDE LOADER */
+  setTimeout(()=>{
+
+    const loader = document.getElementById("loader");
+
+    loader.style.opacity = "0";
+
+    setTimeout(()=>{
+      loader.style.display = "none";
+    },400);
+
+  },800);
+
 });
+
 </script>
 
 </body>
