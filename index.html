@@ -341,6 +341,10 @@ function initChart(){
   });
 }
 
+let firstRun = localStorage.getItem("firstRun");
+let savedStock = localStorage.getItem("lastStock") || "ASX:AXJO";
+
+
 /* =========================
    AXJO CHART
 ========================= */
@@ -540,17 +544,18 @@ function light(){
 ========================= */
 window.addEventListener("load",()=>{
 
-  /* LOAD THEME ICONS */
   updateIcons();
 
-  /* LOAD CHART */
   initChart();
 
-  /* HIDE LOADER */
+  // STEP 2 GOES HERE
+  if(!firstRun){
+    toggleSettings();
+    localStorage.setItem("firstRun", "done");
+  }
+
   setTimeout(()=>{
-
     const loader = document.getElementById("loader");
-
     loader.style.opacity = "0";
 
     setTimeout(()=>{
