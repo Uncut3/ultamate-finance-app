@@ -348,12 +348,18 @@ let chart = null;
 
 function initChart(){
 
+  const isLight = document.body.classList.contains("light");
+
+  // 🧨 IMPORTANT: clear old chart properly
+  document.getElementById("chart").innerHTML = "";
+
   chart = new TradingView.widget({
     container_id: "chart",
-    symbol: localStorage.getItem("lastStock") || "ASX:AXJO",
-    interval: "1",
+    symbol: savedStock,
+    interval: "D",
 
-    theme: document.body.classList.contains("light") ? "light" : "dark",
+    theme: isLight ? "light" : "dark",
+
     style: "1",
     autosize: true,
 
@@ -362,26 +368,22 @@ function initChart(){
     hide_side_toolbar: false,
     withdateranges: true,
 
-    backgroundColor: "rgba(0,0,0,0)",
+    // 🔥 FORCE TEXT VISIBILITY FIX
+    loading_screen: { backgroundColor: "transparent" },
 
     overrides: {
       "paneProperties.background": "rgba(0,0,0,0)",
 
       "paneProperties.vertGridProperties.color":
-        document.body.classList.contains("light")
-          ? "rgba(0,0,0,0.05)"
-          : "rgba(255,255,255,0.03)",
+        isLight ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.05)",
 
       "paneProperties.horzGridProperties.color":
-        document.body.classList.contains("light")
-          ? "rgba(0,0,0,0.05)"
-          : "rgba(255,255,255,0.03)",
+        isLight ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.05)",
 
       "scalesProperties.backgroundColor": "rgba(0,0,0,0)"
     }
   });
 }
-
 /* used when theme changes */
 function reloadChart(){
   document.getElementById("chart").innerHTML = "";
