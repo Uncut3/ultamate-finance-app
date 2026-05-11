@@ -1,6 +1,6 @@
 {
-  "name": "XJO Status",
-  "short_name": "XJO",
+  "name": "ChartView",
+  "short_name": "CV",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
