@@ -12,6 +12,14 @@
 
 <style>
 
+#chart {
+  background: transparent !important;
+}
+
+.page {
+  background: transparent !important;
+}
+
 /* =========================
    RESET
 ========================= */
@@ -278,14 +286,22 @@ new TradingView.widget({
   theme: "dark",
   style: "1",
   autosize: true,
-  allow_symbol_change: true,
-  hide_top_toolbar: false,
-  hide_side_toolbar: false,
-  withdateranges: true
+
+  /* TRANSPARENT BACKGROUND */
+  backgroundColor: "rgba(0,0,0,0)",
+
+  overrides: {
+    "paneProperties.background": "rgba(0,0,0,0)",
+
+    /* grid lines (very faint) */
+    "paneProperties.vertGridProperties.color": "rgba(255,255,255,0.03)",
+    "paneProperties.horzGridProperties.color": "rgba(255,255,255,0.03)",
+
+    "scalesProperties.backgroundColor": "rgba(0,0,0,0)"
+  }
 });
 
 }
-
 /* =========================
    AUSTRALIA NEWS (WORKING)
 ========================= */
@@ -367,11 +383,48 @@ pill.style.transform = `translateX(${activeTab*100}%)`;
 }
 
 /* THEME */
-function dark(){document.body.classList.remove("light");}
-function light(){document.body.classList.add("light");}
+/* =========================
+   THEME SAVE SYSTEM
+========================= */
+
+function dark(){
+
+document.body.classList.remove("light");
+
+/* SAVE DARK MODE */
+localStorage.setItem("theme","dark");
+
+}
+
+function light(){
+
+document.body.classList.add("light");
+
+/* SAVE LIGHT MODE */
+localStorage.setItem("theme","light");
+
+}
+
+/* LOAD SAVED THEME */
+function loadTheme(){
+
+const savedTheme = localStorage.getItem("theme");
+
+if(savedTheme === "light"){
+
+document.body.classList.add("light");
+
+}else{
+
+document.body.classList.remove("light");
+
+}
+
+}
 
 /* LOAD */
 window.addEventListener("load",()=>{
+loadTheme();
 
 initChart();
 
