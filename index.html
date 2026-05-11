@@ -302,6 +302,8 @@ function saveStock(symbol){
   localStorage.setItem("lastStock", symbol);
 }
 
+let savedStock = localStorage.getItem("lastStock") || "ASX:AXJO";
+
 /* =========================
    AXJO CHART
 ========================= */
@@ -311,7 +313,7 @@ function initChart(){
 
   chart = new TradingView.widget({
     container_id: "chart",
-    symbol: "ASX:AXJO",
+    symbol: savedStock,
     interval: "D",
 
     theme: document.body.classList.contains("light") ? "light" : "dark",
