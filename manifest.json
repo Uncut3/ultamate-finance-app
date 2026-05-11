@@ -1,14 +1,22 @@
 {
-  "name": "My App",
-  "short_name": "App",
-  "start_url": "/",
+  "name": "XJO Status",
+  "short_name": "XJO",
+  "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#000000",
+  "background_color": "#141414",
+  "theme_color": "#141414",
+  "orientation": "portrait",
+
   "icons": [
     {
-      "src": "/icon.png",
+      "src": "icon/icon-192.png",
       "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon/icon-512.png",
+      "sizes": "512x512",
       "type": "image/png"
     }
   ]
