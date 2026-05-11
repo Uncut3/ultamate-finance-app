@@ -253,23 +253,40 @@ z-index:2;
 
   <div class="pill" id="pill"></div>
 
+  <!-- STOCK -->
   <div class="tab" onmouseenter="hoverTab(0)" onclick="go('stock')">
-    <div class="icon"><img src="icon/stock.png"></div>
+    <div class="icon">
+      <img
+        id="stockIcon"
+        src="icon/dark-stock.png"
+      >
+    </div>
     <div class="label">Stock</div>
   </div>
 
+  <!-- SETTINGS -->
   <div class="tab" onmouseenter="hoverTab(1)" onclick="toggleSettings()">
-    <div class="icon"><img src="icon/settings.png"></div>
+    <div class="icon">
+      <img
+        id="settingsIcon"
+        src="icon/dark-settings.png"
+      >
+    </div>
     <div class="label">Settings</div>
   </div>
 
+  <!-- NEWS -->
   <div class="tab" onmouseenter="hoverTab(2)" onclick="go('news')">
-    <div class="icon"><img src="icon/news.png"></div>
+    <div class="icon">
+      <img
+        id="newsIcon"
+        src="icon/dark-news.png"
+      >
+    </div>
     <div class="label">News</div>
   </div>
 
 </div>
-
 </div>
 
 <script>
@@ -382,61 +399,67 @@ activeTab = panel.classList.contains("show") ? 1 : 0;
 pill.style.transform = `translateX(${activeTab*100}%)`;
 }
 
-/* THEME */
 /* =========================
-   THEME SAVE SYSTEM
+   THEME SYSTEM
 ========================= */
 
+/* LOAD SAVED THEME */
+if(localStorage.getItem("theme") === "light"){
+  document.body.classList.add("light");
+}else{
+  document.body.classList.remove("light");
+}
+
+/* UPDATE NAV ICONS */
+function updateIcons(){
+
+  const isLight = document.body.classList.contains("light");
+
+  /* STOCK ICON */
+  document.getElementById("stockIcon").src =
+    isLight
+      ? "icon/light-stock.png"
+      : "icon/dark-stock.png";
+
+  /* SETTINGS ICON */
+  document.getElementById("settingsIcon").src =
+    isLight
+      ? "icon/light-settings.png"
+      : "icon/dark-settings.png";
+
+  /* NEWS ICON */
+  document.getElementById("newsIcon").src =
+    isLight
+      ? "icon/light-news.png"
+      : "icon/dark-news.png";
+}
+
+/* DARK MODE */
 function dark(){
 
-document.body.classList.remove("light");
+  document.body.classList.remove("light");
 
-/* SAVE DARK MODE */
-localStorage.setItem("theme","dark");
+  localStorage.setItem("theme","dark");
 
+  updateIcons();
 }
 
+/* LIGHT MODE */
 function light(){
 
-document.body.classList.add("light");
+  document.body.classList.add("light");
 
-/* SAVE LIGHT MODE */
-localStorage.setItem("theme","light");
+  localStorage.setItem("theme","light");
 
+  updateIcons();
 }
 
-/* LOAD SAVED THEME */
-function loadTheme(){
-
-const savedTheme = localStorage.getItem("theme");
-
-if(savedTheme === "light"){
-
-document.body.classList.add("light");
-
-}else{
-
-document.body.classList.remove("light");
-
-}
-
-}
-
-/* LOAD */
+/* RUN ON APP LOAD */
 window.addEventListener("load",()=>{
-loadTheme();
 
-initChart();
-
-setTimeout(()=>{
-document.getElementById("loader").style.opacity="0";
-setTimeout(()=>document.getElementById("loader").style.display="none",400);
-},800);
+  updateIcons();
 
 });
-
-document.addEventListener("gesturestart",e=>e.preventDefault());
-
 </script>
 
 </body>
